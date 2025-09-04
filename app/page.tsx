@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import FooterV1 from "./components/footer/home/FooterV1";
-import DelhiExperiences from "./components/home/DelhiExperiences";
+import FooterV1 from "./components/ui/footer/home/FooterV1";
+import DelhiExperiences from "./components/ui/home/DelhiExperiences";
 
 const DelhiTicketsHero: React.FC = () => {
   const [currency, setCurrency] = useState("INR");
