@@ -61,7 +61,7 @@ const museums = [
   { title: "Etihad Museum", offer: "6% off (38K+ reviews)",     image: "/burj.jpeg" },
 ];
 
-const DubaiExperiences: React.FC = () => {
+const DelhiExperiences: React.FC = () => {
   return (
    <div className=" bg-white">
      <div className="w-full max-w-[1440px] mx-auto">
@@ -172,4 +172,4 @@ const DubaiExperiences: React.FC = () => {
   );
 };
 
-export default DubaiExperiences;
+export default DelhiExperiences;
