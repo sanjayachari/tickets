@@ -52,15 +52,15 @@ const categories = [
 ];
 
 const landmarks = [
-  { title: "Burj Khalifa", offer: "6% off (38K+ reviews)", image: "/burj.jpeg" },
-  { title: "Museum of the Future", offer: "6% off (38K+ reviews)", image: "/burj.jpeg" },
-  { title: "Dubai Frame", offer: "6% off (38K+ reviews)", image: "/burj.jpeg" },
+  { title: "Burj Khalifa", offer: "6% off (38K+)", image: "/burj.jpeg" },
+  { title: "Museum of the Future", offer: "6% off (38K+)", image: "/burj.jpeg" },
+  { title: "Dubai Frame", offer: "6% off (38K+)", image: "/burj.jpeg" },
 ];
 
 const museums = [
-  { title: "Dubai Museum", offer: "6% off (38K+ reviews)", image: "/burj.jpeg" },
-  { title: "Museum of Illusions", offer: "6% off (38K+ reviews)", image: "/burj.jpeg" },
-  { title: "Etihad Museum", offer: "6% off (38K+ reviews)", image: "/burj.jpeg" },
+  { title: "Dubai Museum", offer: "6% off (38K+)", image: "/burj.jpeg" },
+  { title: "Museum of Illusions", offer: "6% off (38K+)", image: "/burj.jpeg" },
+  { title: "Etihad Museum", offer: "6% off (38K+)", image: "/burj.jpeg" },
 ];
 
 

@@ -5,10 +5,10 @@ import Link from "next/link";
 
 // Data Objects
 const topAttractions = [
-  { title: "Burj Khalifa", price: "from INR 21,999", image: "/burj.jpeg" },
-  { title: "Dubai Frame", price: "from INR 21,999", image: "/burj.jpeg" },
-  { title: "Burj Al Arab", price: "from INR 21,999", image: "/burj.jpeg" },
-  { title: "Atlantis", price: "from INR 21,999", image: "/burj.jpeg" },
+  { title: "Burj Khalifa", price: "from INR 21,999", image: "/main.png" },
+  { title: "Dubai Frame", price: "from INR 21,999", image: "/main2.png" },
+  { title: "Burj Al Arab", price: "from INR 21,999", image: "/main3.png" },
+  { title: "Atlantis", price: "from INR 21,999", image: "/main4.png" },
   { title: "Atlantis", price: "from INR 21,999", image: "/burj.jpeg" },
 ];
 
@@ -18,28 +18,28 @@ const bestExperiences = [
     tag: "Ticket",
     rating: "4.5",
     price: "₹10,800/Per",
-    image: "/burj.jpeg",
+    image: "/main5.png",
   },
   {
     title: "Embarking in a 3-Day Adventure",
     tag: "Ticket",
     rating: "4.5",
     price: "₹10,800/Per",
-    image: "/burj.jpeg",
+    image: "/main6.png",
   },
   {
     title: "Explore Red Fort Skip the ticket",
     tag: "Ticket",
     rating: "4.5",
     price: "₹4,500/Per",
-    image: "/burj.jpeg",
+    image: "/main7.png",
   },
   {
     title: "Timezone Pacific Mall Garden",
     tag: "Ticket",
     rating: "4.5",
     price: "₹10,800/Per",
-    image: "/burj.jpeg",
+    image: "/main8.png",
   },
 ];
 
@@ -56,31 +56,31 @@ const categories = [
 const landmarks = [
   {
     title: "Burj Khalifa",
-    offer: "6% off (38K+ reviews)",
+    offer: "6% off (38K+)",
     image: "/burj.jpeg",
   },
   {
     title: "Museum of the Future",
-    offer: "6% off (38K+ reviews)",
+    offer: "6% off (38K+)",
     image: "/burj.jpeg",
   },
-  { title: "Dubai Frame", offer: "6% off (38K+ reviews)", image: "/burj.jpeg" },
+  { title: "Dubai Frame", offer: "6% off (38K+)", image: "/burj.jpeg" },
 ];
 
 const museums = [
   {
     title: "Dubai Museum",
-    offer: "6% off (38K+ reviews)",
+    offer: "6% off (38K+)",
     image: "/burj.jpeg",
   },
   {
     title: "Museum of Illusions",
-    offer: "6% off (38K+ reviews)",
+    offer: "6% off (38K+)",
     image: "/burj.jpeg",
   },
   {
     title: "Etihad Museum",
-    offer: "6% off (38K+ reviews)",
+    offer: "6% off (38K+)",
     image: "/burj.jpeg",
   },
 ];
@@ -140,7 +140,7 @@ const Experiences: React.FC = () => {
           </div>
 
           {/* Responsive Scrollable Container */}
-          <div className="flex gap-6 overflow-x-auto md:grid md:grid-cols-4 md:gap-6 no-scrollbar py-2">
+          <div className="flex gap-6 overflow-x-auto md:grid md:grid-cols-4 md:gap-6 no-scrollbar py-2 px-1">
             {bestExperiences.map((exp, i) => (
               <div
                 key={i}

@@ -18,39 +18,35 @@ const DelhiTicketsHero: React.FC = () => {
   return (
     <div className="w-full ubuntu-light">
       {/* Navbar */}
-       <Navbar currency="INR" language="English" />
+      <Navbar currency="INR" language="English" />
 
+      {/* Hero Section */}
+      <div className="relative w-full h-[60vh] sm:h-[70vh] md:h-[70vh] lg:h-[70vh]">
+        {/* Background video */}
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src="https://storage.googleapis.com/images.staybook.in/activities/main-0.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
 
- {/* Hero Section */}
-<div className="relative w-full h-[60vh] sm:h-[70vh] md:h-[70vh] lg:h-[70vh]">
-  {/* Background video */}
-  <video
-    className="absolute inset-0 w-full h-full object-cover"
-    src="https://storage.googleapis.com/images.staybook.in/activities/main-0.mp4"
-    autoPlay
-    loop
-    muted
-    playsInline
-  />
-
-  {/* Overlay */}
-  <div className="absolute inset-0 bg-black/40 flex items-end">
-    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-8 sm:py-10 md:py-12 text-white">
-      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
-        Delhi
-      </h1>
-      <p className="mt-3 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl">
-        Experience the best of Delhi with its popular attractions. Starting with Burj Khalifa, then explore Aquaventure Atlantis Delhi. Don’t miss Future Delhi for an unforgettable experience. Explore these natural wonders and unique cultural experiences.
-      </p>
-      <a
-        href="#"
-        className="mt-4 inline-block text-white underline font-medium hover:text-gray-200 text-sm sm:text-base"
-      >
-        See More.
-      </a>
-    </div>
-  </div>
-</div>
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/40 flex items-end">
+          <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-8 sm:py-10 md:py-12 text-white">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
+              Delhi
+            </h1>
+            <p className="mt-3 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl">
+              Experience the best of Delhi with its popular attractions.
+              Starting with Burj Khalifa, then explore Aquaventure Atlantis
+              Delhi. Don’t miss Future Delhi for an unforgettable experience.
+              Explore these natural wonders and unique cultural experiences.
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* Spacer Section */}
       <DelhiExperiences />
