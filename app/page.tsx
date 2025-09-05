@@ -16,7 +16,7 @@ const DelhiTicketsHero: React.FC = () => {
   const [language, setLanguage] = useState("En");
 
   return (
-    <div className="w-full">
+    <div className="w-full ubuntu-light">
       {/* Navbar */}
        <Navbar currency="INR" language="English" />
 

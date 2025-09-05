@@ -71,7 +71,7 @@ const HomeAbout = () => {
               <span className="text-sm font-medium">Testimonials</span>
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 ubuntu-bold">
               What our clients are saying about us?
             </h2>
             <p className="text-gray-600 text-sm md:text-base">
@@ -124,7 +124,7 @@ const HomeAbout = () => {
                         ))}
                       </div>
                     </div>
-                    <p className="text-gray-600 text-sm md:text-base">{t.text}</p>
+                    <p className="text-gray-600 text-sm md:text-base font-write">{t.text}</p>
                   </div>
                 ))}
               </div>
