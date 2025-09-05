@@ -20,11 +20,11 @@ const SubscribeCard = () => {
                 prices drop the moment you sign up!
               </h2>
 
-              <div className="flex flex-col sm:flex-row items-center sm:items-stretch bg-white rounded-full shadow-md overflow-hidden w-full max-w-md">
+              <div className="flex flex-col sm:flex-row items-center sm:items-stretch gap-2 sm:gap-0 w-full max-w-md">
                 <input
                   type="email"
                   placeholder="Your Email"
-                  className="flex-1 px-4 py-3 outline-none text-gray-700 rounded-l-full sm:rounded-l-full sm:rounded-r-none mb-2 sm:mb-0"
+                  className="flex-1 px-4 py-3 outline-none text-gray-700 rounded-full sm:rounded-l-full sm:rounded-r-none w-full"
                 />
                 <button className="bg-black text-white px-6 py-3 font-semibold rounded-full sm:rounded-r-full sm:rounded-l-none w-full sm:w-auto">
                   Subscribe

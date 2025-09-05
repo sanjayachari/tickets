@@ -12,10 +12,6 @@ const Promo = () => {
     "/home/promo2.png",
     "/home/promo3.png",
     "/home/promo4.png",
-    "/home/promo1.png",
-    "/home/promo2.png",
-    "/home/promo3.png",
-    "/home/promo4.png",
   ];
 
   const [current, setCurrent] = useState(0);
@@ -24,13 +20,13 @@ const Promo = () => {
   // Auto-slide logic
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 2) % promoImages.length); // jump 2 at a time
+      setCurrent((prev) => (prev + 1) % promoImages.length);
     }, 3000);
 
     return () => clearInterval(interval);
   }, [promoImages.length]);
 
-  // Scroll horizontally inside container (no page scroll!)
+  // Scroll horizontally
   useEffect(() => {
     if (scrollRef.current) {
       const container = scrollRef.current;
@@ -53,13 +49,14 @@ const Promo = () => {
         {promoImages.map((img, i) => (
           <div
             key={i}
-            className="relative w-1/2 h-[250px] rounded-xl overflow-hidden shadow-md flex-shrink-0 snap-start"
+            className="relative flex-shrink-0 w-full sm:w-3/4 md:w-1/2 lg:w-1/3 rounded-xl overflow-hidden shadow-md snap-start"
           >
             <Image
               src={img}
               alt={`Promo ${i + 1}`}
-              fill
-              className="object-cover rounded-xl"
+              width={600}        // width for aspect ratio
+              height={400}       // height for aspect ratio
+              className="object-contain w-full h-full rounded-xl"
             />
           </div>
         ))}
