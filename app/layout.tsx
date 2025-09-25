@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { ReactNode } from "react"; // ✅ import ReactNode
+import { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { DomainProvider } from "./context/Domain";
 import { headers } from "next/headers";
+import DomainWrapper from "./components/ui/loading/DomainWrapper";
 
 type RootLayoutProps = { children: ReactNode };
 
@@ -23,14 +24,17 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  // ✅ Await headers() because it's async in Next.js 15
   const currentHeaders = await headers();
-  const host = currentHeaders.get("x-current-domain") || "delhitickets.com";
-  console.log('host' , host)
+  const host = currentHeaders.get("x-current-domain") || null; // don't fallback yet
+  console.log("host", host);
+
   return (
     <html lang="en">
-<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <DomainProvider initialDomain={host}>{children}</DomainProvider>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {/* Wrap children in a client component that handles loading */}
+        <DomainWrapper host={host}>{children}</DomainWrapper>
       </body>
     </html>
   );
