@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -16,47 +14,53 @@ import apiClient from "./lib/helper/apiClient";
 import { useDomain } from "./context/Domain";
 
 const DelhiTicketsHero: React.FC = () => {
-  const [currency, setCurrency] = useState<string>("INR");
-  const [language, setLanguage] = useState<string>("En");
-  const [heroData, setHeroData] = useState<any>({});
-  const { currentDomain, setCurrentDomain } = useDomain();
+  const [currency] = useState<string>("INR");
+  const [language] = useState<string>("En");
+  const [heroData, setHeroData] = useState<any>(null);
+  const { currentDomain, setCurrentDomain, isLoading, setIsLoading } = useDomain();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // ✅ Determine domain dynamically with fallback
-        let domain_name = "delhitickets.com"; // fallback default
+        setIsLoading(true); // start loading
 
+        // Determine domain dynamically
+        let domain_name = "delhitickets.com"; // fallback default
         if (typeof window !== "undefined") {
           const hostname = window.location.hostname;
-
-          if (hostname === "localhost") {
-            domain_name = "delhitickets.com"; // local dev fallback
-          } else {
-            domain_name = hostname.replace(/^www\./, "");
-          }
+          domain_name = hostname === "localhost"
+            ? "delhitickets.com"
+            : hostname.replace(/^www\./, "");
         }
 
-        // Update context so other components can use it
         setCurrentDomain(domain_name);
 
-        // Fetch data for the current domain
         const res = await apiClient.get(`/domain/${domain_name}`);
         setHeroData(res.data.data);
       } catch (err) {
         console.error("API Error:", err);
+      } finally {
+        setIsLoading(false); // end loading
       }
     };
 
     fetchData();
-  }, [setCurrentDomain]);
+  }, [setCurrentDomain, setIsLoading]);
 
+  // ✅ Show single full-page loading if context says loading
+  if (isLoading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <span className="text-lg font-medium">Loading page...</span>
+      </div>
+    );
+  }
+
+  // Render full UI after loading
   return (
     <div className="w-full ubuntu-light">
-      {/* Navbar */}
       <Navbar currency={currency} language={language} />
 
-      {/* Hero Section */}
       <div className="relative w-full h-[60vh] sm:h-[70vh] md:h-[70vh] lg:h-[70vh]">
         <video
           className="absolute inset-0 w-full h-full object-cover"
@@ -69,26 +73,15 @@ const DelhiTicketsHero: React.FC = () => {
         <div className="absolute inset-0 bg-black/40 flex items-end">
           <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-8 sm:py-10 md:py-12 text-white">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
-  {!heroData || Object.keys(heroData).length === 0 ? (
-    // Show loading spinner or text while fetching
-    <span>Loading...</span>
-  ) : (
-    heroData.domain_City
-  )}
-</h1>
-<p className="mt-3 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl">
-  {!heroData || Object.keys(heroData).length === 0 ? (
-    <span>Loading description...</span>
-  ) : (
-    heroData.domain_Description
-  )}
-</p>
-
+              {heroData?.domain_City}
+            </h1>
+            <p className="mt-3 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl">
+              {heroData?.domain_Description}
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Sections */}
       <DelhiExperiences />
       <FlexBanner />
       <Experiences1 />
