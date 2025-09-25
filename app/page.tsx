@@ -69,12 +69,21 @@ const DelhiTicketsHero: React.FC = () => {
         <div className="absolute inset-0 bg-black/40 flex items-end">
           <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-8 sm:py-10 md:py-12 text-white">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
-              {heroData?.domain_City || "Delhi"}
-            </h1>
-            <p className="mt-3 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl">
-              {heroData?.domain_Description ||
-                `Experience the best of Delhi with its popular attractions. Starting with Burj Khalifa, then explore Aquaventure Atlantis Delhi. Don’t miss Future Delhi for an unforgettable experience. Explore these natural wonders and unique cultural experiences.`}
-            </p>
+  {!heroData || Object.keys(heroData).length === 0 ? (
+    // Show loading spinner or text while fetching
+    <span>Loading...</span>
+  ) : (
+    heroData.domain_City
+  )}
+</h1>
+<p className="mt-3 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl">
+  {!heroData || Object.keys(heroData).length === 0 ? (
+    <span>Loading description...</span>
+  ) : (
+    heroData.domain_Description
+  )}
+</p>
+
           </div>
         </div>
       </div>
