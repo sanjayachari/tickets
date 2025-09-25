@@ -12,6 +12,7 @@ export default function DomainWrapper({ host, children }: Props) {
   const [domain, setDomain] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log('____' , host)
     if (host) {
       setDomain(host);
     }
