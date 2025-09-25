@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
+import { ReactNode } from "react"; // ✅ import ReactNode
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { DomainProvider } from "./context/Domain";
+import { headers } from "next/headers";
+
+type RootLayoutProps = { children: ReactNode };
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,17 +22,15 @@ export const metadata: Metadata = {
   description: "Delhi tickets booking",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({ children }: RootLayoutProps) {
+  // ✅ Await headers() because it's async in Next.js 15
+  const currentHeaders = await headers();
+  const host = currentHeaders.get("x-current-domain") || "delhitickets.com";
+  console.log('host' , host)
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <DomainProvider initialDomain={host}>{children}</DomainProvider>
       </body>
     </html>
   );
