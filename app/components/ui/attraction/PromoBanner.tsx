@@ -42,7 +42,7 @@ const PromoBanner = () => {
           <div className="absolute inset-0 bg-black/40"></div>
           <div className="absolute inset-0 flex flex-col justify-center items-start text-white p-6 gap-3">
             <p className="text-sm font-medium">
-              Don't forget to check out these activities
+              Dont forget to check out these activities
             </p>
             <p className="font-bold text-lg">
               All Time Favourite

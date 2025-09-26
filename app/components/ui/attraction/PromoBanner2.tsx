@@ -13,7 +13,7 @@ const PromoBanner2 = () => {
             Special discount on your first Booking
           </h2>
           <p className="text-lg text-gray-700 max-w-md">
-            Limited time offer, don't miss the opportunity{" "}
+            Limited time offer, dont miss the opportunity{" "}
           </p>
           <button className="bg-[#EB662B] text-white px-6 py-3 rounded-md font-bold w-fit">
             Signup Now

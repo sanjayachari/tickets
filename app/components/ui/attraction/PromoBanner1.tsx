@@ -24,7 +24,7 @@ const PromoBanner1 = () => {
             Keep things flexible
           </h2>
           <p className="max-w-2xl text-lg md:text-xl">
-            Use Reserve Now &amp; Pay Later to secure the activities you don't want to
+            Use Reserve Now &amp; Pay Later to secure the activities you dont want to
             miss without being locked in.
           </p>
         </div>
