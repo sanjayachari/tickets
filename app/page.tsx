@@ -18,8 +18,7 @@ import { useDomain } from "./context/Domain";
 const DelhiTicketsHero: React.FC = () => {
   const [currency] = useState<string>("INR");
   const [language] = useState<string>("En");
-  const [heroData, setHeroData] = useState<any>(null);
-  const { currentDomain, setCurrentDomain, isLoading, setIsLoading } = useDomain();
+  const { currentDomain, setCurrentDomain, isLoading, setIsLoading , setDomainData , domainData } = useDomain();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,9 +35,9 @@ const DelhiTicketsHero: React.FC = () => {
         }
 
         setCurrentDomain(domain_name);
-
         const res = await apiClient.get(`/domain/${domain_name}`);
-        setHeroData(res.data.data);
+        setDomainData(res.data.data);
+
       } catch (err) {
         console.error("API Error:", err);
       } finally {
@@ -48,6 +47,8 @@ const DelhiTicketsHero: React.FC = () => {
 
     fetchData();
   }, [setCurrentDomain, setIsLoading]);
+
+  console.log('dom' , domainData)
 
   // ✅ Show single full-page loading if context says loading
   if (isLoading) {
@@ -75,10 +76,10 @@ const DelhiTicketsHero: React.FC = () => {
         <div className="absolute inset-0 bg-black/40 flex items-end">
           <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-8 sm:py-10 md:py-12 text-white">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
-              {heroData?.domain_City}
+              {domainData?.domain_City}
             </h1>
             <p className="mt-3 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl">
-              {heroData?.domain_Description}
+              {domainData?.domain_Description}
             </p>
           </div>
         </div>

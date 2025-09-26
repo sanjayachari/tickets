@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
@@ -7,7 +9,9 @@ type DomainContextType = {
   currentDomain: string;
   setCurrentDomain: (domain: string) => void;
   isLoading: boolean;
-  setIsLoading: (loading: boolean) => void; // ✅ expose setter
+  setIsLoading: (loading: boolean) => void;
+  domainData: any; // ✅ store domain data
+  setDomainData: (data: any) => void;
 };
 
 // 2️⃣ Create the context
@@ -16,6 +20,8 @@ const DomainContext = createContext<DomainContextType>({
   setCurrentDomain: () => {},
   isLoading: true,
   setIsLoading: () => {},
+  domainData: null,
+  setDomainData: () => {},
 });
 
 // 3️⃣ Define props for DomainProvider
@@ -31,6 +37,7 @@ export const DomainProvider = ({
 }: DomainProviderProps) => {
   const [currentDomain, setCurrentDomain] = useState<string>(initialDomain);
   const [isLoading, setIsLoading] = useState<boolean>(!initialDomain);
+  const [domainData, setDomainData] = useState<any>(null); // ✅ new state
 
   // ✅ Update currentDomain & isLoading when initialDomain changes
   useEffect(() => {
@@ -41,7 +48,16 @@ export const DomainProvider = ({
   }, [initialDomain]);
 
   return (
-    <DomainContext.Provider value={{ currentDomain, setCurrentDomain, isLoading, setIsLoading }}>
+    <DomainContext.Provider
+      value={{
+        currentDomain,
+        setCurrentDomain,
+        isLoading,
+        setIsLoading,
+        domainData,
+        setDomainData, // ✅ expose setter
+      }}
+    >
       {children}
     </DomainContext.Provider>
   );

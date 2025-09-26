@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { DomainProvider } from "./context/Domain";
 import { headers } from "next/headers";
 import DomainWrapper from "./components/ui/loading/DomainWrapper";
 
