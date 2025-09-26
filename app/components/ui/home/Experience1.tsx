@@ -2,19 +2,45 @@ import React from "react";
 import CategorySection from "./CategorySection";
 
 const landmarks = [
-  { title: "Burj Khalifa", offer: "6% off (38K+)", image: "/burj.jpeg" },
+  {
+    title: "Burj Khalifa",
+    offer: "6% (38K+ reviews)",
+    image: "/burj.jpeg",
+  },
   {
     title: "Museum of the Future",
-    offer: "6% off (38K+)",
+    offer: "6% (38K+ reviews)",
     image: "/main1.png",
   },
-  { title: "Dubai Frame", offer: "6% off (38K+)", image: "/burj.jpeg" },
+  {
+    title: "Museum of the Future",
+    offer: "6% (38K+ reviews)",
+    image: "/main1.png",
+  },
+  { title: "Dubai Frame", offer: "6% (38K+ reviews)", image: "/burj.jpeg" },
 ];
 
 const museums = [
-  { title: "Dubai Museum", offer: "6% off (38K+)", image: "/burj.jpeg" },
-  { title: "Museum of Illusions", offer: "6% off (38K+)", image: "/main1.png" },
-  { title: "Etihad Museum", offer: "6% off (38K+)", image: "/burj.jpeg" },
+  {
+    title: "Dubai Museum",
+    offer: "6% (38K+ reviews)",
+    image: "/burj.jpeg",
+  },
+  {
+    title: "Dubai Museum",
+    offer: "6% (38K+ reviews)",
+    image: "/burj.jpeg",
+  },
+  {
+    title: "Museum of Illusions",
+    offer: "6% (38K+ reviews)",
+    image: "/main1.png",
+  },
+  {
+    title: "Etihad Museum",
+    offer: "6% (38K+ reviews)",
+    image: "/burj.jpeg",
+  },
 ];
 
 const Experiences1: React.FC = () => {
@@ -26,14 +52,14 @@ const Experiences1: React.FC = () => {
           {/* Landmarks */}
           <div className="mb-10">
             <CategorySection
-              title="Landmarks in Dubai"
+              title="Theme Parks in Dubai"
               items={landmarks}
               onSeeAll={() => console.log("See all landmarks clicked")}
             />
           </div>
           {/* Museums */}
           <CategorySection
-            title="Museums in Dubai"
+            title="Zoo in Dubai"
             items={museums}
             onSeeAll={() => console.log("See all museums clicked")}
           />

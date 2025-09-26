@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -29,19 +29,27 @@ const testimonials = [
 
 const HomeAbout = () => {
   const [index, setIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   const prevSlide = () => {
-    setIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
+    setIndex((prev) => (prev === 0 ? 0 : prev - 1));
   };
 
   const nextSlide = () => {
-    setIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
+    setIndex((prev) => (prev === testimonials.length - 1 ? prev : prev + 1));
   };
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <section className="bg-gray-50 rounded-3xl">
       <div className="max-w-[1440px] mx-auto px-6 md:px-20 py-20">
-        <div className="flex flex-col md:flex-row gap-12 items-center">
+        <div className="flex flex-col md:flex-row gap-16 items-center">
           {/* LEFT SIDE */}
           <div className="md:w-1/2">
             <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm mb-6">
@@ -93,14 +101,16 @@ const HomeAbout = () => {
             <div className="overflow-hidden w-full">
               <div
                 className="flex transition-transform duration-700 ease-in-out"
-                style={{ transform: `translateX(-${index * 100}%)` }}
+                style={{
+                  transform: `translateX(-${index * (isMobile ? 105 : 60)}%)`,
+                }}
               >
                 {testimonials.map((t, i) => (
                   <div
                     key={i}
                     className="w-full md:w-2/3 flex-shrink-0 bg-white rounded-2xl mr-6 p-6 flex flex-col gap-4"
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 border-b border-gray-300 pb-4">
                       <Image
                         src={t.image}
                         alt={t.name}
@@ -118,13 +128,18 @@ const HomeAbout = () => {
                       </div>
                       <div className="ml-auto flex">
                         {Array.from({ length: t.rating }).map((_, i) => (
-                          <span key={i} className="text-yellow-400 text-sm md:text-base">
+                          <span
+                            key={i}
+                            className="text-yellow-400 text-sm md:text-base"
+                          >
                             ★
                           </span>
                         ))}
                       </div>
                     </div>
-                    <p className="text-gray-600 text-sm md:text-base font-write">{t.text}</p>
+                    <p className="text-gray-600 text-sm md:text-base font-write">
+                      {t.text}
+                    </p>
                   </div>
                 ))}
               </div>

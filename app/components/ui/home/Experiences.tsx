@@ -1,7 +1,8 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import CategorySection from "./CategorySection";
 import Link from "next/link";
+import { ChevronRight, MapPin, Star } from "lucide-react";
 
 // Data Objects
 const topAttractions = [
@@ -17,29 +18,37 @@ const bestExperiences = [
     title: "Museum of Illusions",
     tag: "Ticket",
     rating: "4.5",
+    orgPrice: "₹17,800",
     price: "₹10,800/Per",
     image: "/main5.png",
+    location: "Dubai",
   },
   {
     title: "Embarking in a 3-Day Adventure",
     tag: "Ticket",
     rating: "4.5",
+    orgPrice: "₹17,800",
     price: "₹10,800/Per",
     image: "/main6.png",
+    location: "Dubai",
   },
   {
     title: "Explore Red Fort Skip the ticket",
     tag: "Ticket",
     rating: "4.5",
+    orgPrice: "₹9,800",
     price: "₹4,500/Per",
     image: "/main7.png",
+    location: "Dubai",
   },
   {
     title: "Timezone Pacific Mall Garden",
     tag: "Ticket",
     rating: "4.5",
+    orgPrice: "₹17,800",
     price: "₹10,800/Per",
     image: "/main8.png",
+    location: "Dubai",
   },
 ];
 
@@ -56,58 +65,69 @@ const categories = [
 const landmarks = [
   {
     title: "Burj Khalifa",
-    offer: "6% off (38K+)",
+    offer: "6% (38K+ reviews)",
     image: "/burj.jpeg",
   },
   {
     title: "Museum of the Future",
-    offer: "6% off (38K+)",
+    offer: "6% (38K+ reviews)",
     image: "/burj.jpeg",
   },
-  { title: "Dubai Frame", offer: "6% off (38K+)", image: "/burj.jpeg" },
+  { title: "Dubai Frame", offer: "6% (38K+ reviews)", image: "/burj.jpeg" },
+  {
+    title: "Museum of the Future",
+    offer: "6% (38K+ reviews)",
+    image: "/burj.jpeg",
+  },
 ];
 
 const museums = [
   {
     title: "Dubai Museum",
-    offer: "6% off (38K+)",
+    offer: "6% (38K+ reviews)",
     image: "/burj.jpeg",
   },
   {
     title: "Museum of Illusions",
-    offer: "6% off (38K+)",
+    offer: "6% (38K+ reviews)",
     image: "/burj.jpeg",
   },
   {
     title: "Etihad Museum",
-    offer: "6% off (38K+)",
+    offer: "6% (38K+ reviews)",
+    image: "/burj.jpeg",
+  },
+  {
+    title: "Dubai Museum",
+    offer: "6% (38K+ reviews)",
     image: "/burj.jpeg",
   },
 ];
 
 const Experiences: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState("All");
   return (
     <div className="bg-white">
       {/* Top Attractions */}
       <section className="bg-[#F1F6FF] py-10">
         <div className="max-w-[1440px] mx-auto px-4 md:px-20">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-black">
-              Top Attraction in <span className="text-yellow-600">Dubai</span>
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-green-800 via-green-600 to-yellow-500 bg-clip-text text-transparent">
+              Top Attraction in Dubai
             </h2>
             <Link
               href="/attractions"
               className="text-blue-600 text-sm font-semibold flex items-center gap-1"
             >
-              See all <span>›</span>
+              See all <ChevronRight className="h-5 w-5 text-black" />
             </Link>
           </div>
 
-          <div className="flex gap-6 overflow-x-auto pb-2 no-scrollbar">
+          <div className="flex gap-4 md:gap-6 overflow-x-auto pb-2 no-scrollbar">
             {topAttractions.map((item, i) => (
               <div
                 key={i}
-                className="relative h-[300px] w-[240px] rounded-xl overflow-hidden shadow flex-shrink-0"
+                className="relative h-[230px] w-[150px] md:h-[300px] md:w-[240px] rounded-xl overflow-hidden shadow flex-shrink-0"
               >
                 <img
                   src={item.image}
@@ -135,7 +155,7 @@ const Experiences: React.FC = () => {
               href="/attractions"
               className="text-blue-600 text-sm font-semibold flex items-center gap-1"
             >
-              See all <span>›</span>
+              See all <ChevronRight className="h-5 w-5 text-black" />
             </Link>
           </div>
 
@@ -144,20 +164,40 @@ const Experiences: React.FC = () => {
             {bestExperiences.map((exp, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-64 md:w-full rounded-xl overflow-hidden shadow-md hover:shadow-md transition"
+                className="flex-shrink-0 h-[400px] w-64 md:w-full rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition"
               >
                 <img
                   src={exp.image}
                   alt={exp.title}
-                  className="h-40 w-full object-cover"
+                  className="h-60 w-full object-cover"
                 />
-                <div className="p-4">
-                  <p className="text-sm text-gray-500">{exp.tag}</p>
+                <div className="p-4 flex flex-col justify-between h-40">
+                  <div className="flex justify-between items-center">
+                    <p className="text-sm text-gray-500">{exp.tag}</p>
+                    <div className="flex items-center gap-1">
+                      <p className="text-sm font-semibold">{exp.rating}</p>
+                      <Star className="h-4 w-4 text-yellow-500 fill-yellow-500 mb-1" />
+                    </div>
+                  </div>
+
                   <h3 className="font-semibold text-lg text-black">
                     {exp.title}
                   </h3>
-                  <p className="text-yellow-500 text-sm">★ {exp.rating}</p>
-                  <p className="text-gray-700 text-sm">from: {exp.price}</p>
+
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 " />
+                    <div className="text-sm ">{exp.location}</div>
+                  </div>
+
+                  <div className="flex justify-between items-center">
+                    <p className="text-gray-700 text-sm">
+                      from-{" "}
+                      <span className="text-red-300 line-through">
+                        {exp.orgPrice}
+                      </span>
+                    </p>
+                    <div className="font-semibold">{exp.price}</div>
+                  </div>
                 </div>
               </div>
             ))}
@@ -173,7 +213,12 @@ const Experiences: React.FC = () => {
             {categories.map((cat, i) => (
               <button
                 key={i}
-                className="flex items-center gap-2 px-4 py-2 rounded-sm border border-gray-300 text-sm font-medium hover:bg-gray-100 text-black flex-shrink-0"
+                onClick={() => setSelectedCategory(cat.name)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-sm border text-sm font-medium hover:bg-gray-100 text-black flex-shrink-0 ${
+                  selectedCategory === cat.name
+                    ? "border-black "
+                    : "border-gray-300"
+                }`}
               >
                 <Image
                   src={cat.icon}
