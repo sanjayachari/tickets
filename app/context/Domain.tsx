@@ -1,22 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { DomainDataType } from "../lib/api";
 
-// 1️⃣ Define the shape of your domain context
 type DomainContextType = {
   currentDomain: string;
   setCurrentDomain: (domain: string) => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
-  domainData: any; // ✅ store domain data
-  setDomainData: (data: any) => void;
+  domainData: DomainDataType | null;
+  setDomainData: (data: DomainDataType | null) => void;
 };
 
-// 2️⃣ Create the context
 const DomainContext = createContext<DomainContextType>({
-  currentDomain: '',
+  currentDomain: "",
   setCurrentDomain: () => {},
   isLoading: true,
   setIsLoading: () => {},
@@ -24,28 +21,28 @@ const DomainContext = createContext<DomainContextType>({
   setDomainData: () => {},
 });
 
-// 3️⃣ Define props for DomainProvider
 type DomainProviderProps = {
   children: ReactNode;
   initialDomain?: string;
+  initialData?: DomainDataType | null;
 };
 
-// 4️⃣ DomainProvider component
 export const DomainProvider = ({
   children,
-  initialDomain = ''
+  initialDomain = "",
+  initialData = null,
 }: DomainProviderProps) => {
   const [currentDomain, setCurrentDomain] = useState<string>(initialDomain);
   const [isLoading, setIsLoading] = useState<boolean>(!initialDomain);
-  const [domainData, setDomainData] = useState<any>(null); // ✅ new state
+  const [domainData, setDomainData] = useState<DomainDataType | null>(initialData);
 
-  // ✅ Update currentDomain & isLoading when initialDomain changes
   useEffect(() => {
     if (initialDomain) {
       setCurrentDomain(initialDomain);
+      setDomainData(initialData);
       setIsLoading(false);
     }
-  }, [initialDomain]);
+  }, [initialDomain, initialData]);
 
   return (
     <DomainContext.Provider
@@ -55,7 +52,7 @@ export const DomainProvider = ({
         isLoading,
         setIsLoading,
         domainData,
-        setDomainData, // ✅ expose setter
+        setDomainData,
       }}
     >
       {children}
@@ -63,5 +60,4 @@ export const DomainProvider = ({
   );
 };
 
-// 5️⃣ Hook to use context
 export const useDomain = (): DomainContextType => useContext(DomainContext);

@@ -67,10 +67,10 @@ const DelhiTicketsHero: React.FC = () => {
         <div className="absolute inset-0 bg-black/40 flex items-end">
           <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-8 sm:py-10 md:py-12 text-white">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
-              {domainData?.domain_City}
+              {domainData?.domain_name}
             </h1>
             <p className="mt-3 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl">
-              {domainData?.domain_Description}
+              {domainData?.description}
             </p>
           </div>
         </div>
