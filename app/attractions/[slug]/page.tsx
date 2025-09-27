@@ -10,6 +10,7 @@ import Banner from "@/app/components/ui/attraction/Banner";
 import Navbar from "@/app/components/ui/navbar/Navbar";
 import CategoryTypeV1 from "@/app/components/ui/categoryTypes/CategoryTypeV1";
 import InfiniteCategory from "@/app/components/ui/categoryTypes/InfiniteCategory";
+import Image from "next/image";
 
 const AttractionPage: React.FC = () => {
   const pathname = usePathname(); // e.g., "/category/attractions"
@@ -150,13 +151,40 @@ const AttractionPage: React.FC = () => {
       <CategoryTypeV1 />
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20 flex justify-between items-center py-3">
         <div>
-
-      <InfiniteCategory />
-      <InfiniteCategory />
-      <InfiniteCategory />
-      <div className="flex justify-center items-center py-4">
-        <div className="w-[200px] p-2 border-2 border-black rounded-3xl flex justify-center items-center">Show more</div>
-      </div>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-bold text-black">Top Attractions</h2>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                className="p-2 rounded-full hover:bg-gray-200"
+                aria-label="Filter"
+              >
+                <Image
+                  src="/icons/filter_1.png"
+                  alt="Filter"
+                  width={24} // icon width
+                  height={24} // icon height
+                  className="object-contain"
+                />
+              </button>
+              <div className="flex gap-2 border rounded-md p-1">
+                <div className="bg-emerald-800 text-white px-6 py-1 rounded-md font-bold">
+                  Ticket
+                </div>
+                <div className=" text-black px-6 py-1 rounded-md font-bold">
+                  Tour
+                </div>
+              </div>
+            </div>
+          </div>{" "}
+          <InfiniteCategory />
+          <InfiniteCategory />
+          <InfiniteCategory />
+          <div className="flex justify-center items-center py-4">
+            <div className="w-[200px] p-2 border-2 border-black rounded-3xl flex justify-center items-center">
+              Show more
+            </div>
+          </div>
         </div>
       </div>
     </div>

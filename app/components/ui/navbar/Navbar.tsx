@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React, { useState } from "react";
 
 interface NavbarProps {
@@ -13,9 +14,9 @@ const Navbar: React.FC<NavbarProps> = ({ currency, language }) => {
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20 flex justify-between items-center py-3">
         {/* Left: Logo + Branding */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-wrap">
           <img
-            src="/delhilogo.png"
+            src="/taj_brand_logo.png"
             alt="Delhi Tickets Logo"
             className="w-12 h-12 sm:w-16 sm:h-16 rounded"
           />
@@ -29,7 +30,7 @@ const Navbar: React.FC<NavbarProps> = ({ currency, language }) => {
             alt="Staybook Logo"
             className="h-12 sm:h-16"
           />
-        </div>
+        </Link>
 
         {/* Right: Currency & Language */}
         <div className="hidden md:flex items-center gap-2 sm:gap-3 text-black">

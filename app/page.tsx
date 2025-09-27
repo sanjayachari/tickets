@@ -28,6 +28,7 @@ const DelhiTicketsHero: React.FC = () => {
         let domain_name = "delhitickets.com"; // fallback default
         if (typeof window !== "undefined") {
           const hostname = window.location.hostname;
+          console.log('hostname' , hostname)
           domain_name = hostname === "localhost"
             ? "delhitickets.com"
             : hostname.replace(/^www\./, "");
