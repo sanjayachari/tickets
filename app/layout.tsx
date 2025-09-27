@@ -17,22 +17,51 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Delhi tickets",
-  description: "Delhi tickets booking",
-};
+// Dynamic metadata
+export async function generateMetadata(): Promise<Metadata> {
+  const currentHeaders = await headers();
+  const host = currentHeaders.get("x-current-domain") || "";
+
+  let title = "Staybook Tickets";
+  let description = "Book tickets for attractions with Staybook";
+
+  // Example domain-specific metadata
+  if (host.includes("delhitickets.com")) {
+    title = "Delhi Tickets";
+    description = "Book entry tickets and tours in Delhi";
+  } else if (host.includes("agratickets.com")) {
+    title = "Agra Tickets";
+    description = "Skip-the-line entry to Taj Mahal and Agra Fort";
+  }
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://${host}`,
+      images: [
+        {
+          url: `https://${host}/og-image.jpg`,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+  };
+}
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   const currentHeaders = await headers();
-  const host = currentHeaders.get("x-current-domain") || null; // don't fallback yet
-  console.log("host", host);
+  const host = currentHeaders.get("x-current-domain") || null;
 
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* Wrap children in a client component that handles loading */}
         <DomainWrapper host={host}>{children}</DomainWrapper>
       </body>
     </html>
