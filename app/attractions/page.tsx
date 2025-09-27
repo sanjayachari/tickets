@@ -15,6 +15,8 @@ import CategoryType from "../components/ui/categoryTypes/CategoryTypeV0";
 import PromoBanner from "../components/ui/attraction/PromoBanner";
 import PromoBanner1 from "../components/ui/attraction/PromoBanner1";
 import PromoBanner2 from "../components/ui/attraction/PromoBanner2";
+import FooterV1 from "../components/ui/footer/home/FooterV1";
+import Footer from "../components/ui/footer/Footer";
 
 const AttractionPage: React.FC = () => {
   const pathname = usePathname(); // e.g., "/category/attractions"
@@ -28,10 +30,6 @@ const AttractionPage: React.FC = () => {
 
   const { currentDomain, setCurrentDomain, domainData, setDomainData } = useDomain();
 
-  // Local loading states for both API calls
-  const [domainLoading, setDomainLoading] = useState<boolean>(true);
-  const [categoryLoading, setCategoryLoading] = useState<boolean>(true);
-
   const topAttractions = [
   { title: "Burj Khalifa", price: "from INR 21,999", image: "/main.png" },
   { title: "Dubai Frame", price: "from INR 21,999", image: "/main2.png" },
@@ -40,6 +38,8 @@ const AttractionPage: React.FC = () => {
   { title: "Atlantis", price: "from INR 21,999", image: "/burj.jpeg" },
 ];
 
+
+console.log('categorySlug____', categorySlug)
 const bestExperiences = [
   {
     title: "Museum of Illusions",
@@ -90,30 +90,23 @@ const bestExperiences = [
 
         // ✅ 1st API call: domain data
         if (!domainData) {
-          setDomainLoading(true);
           const res = await apiClient.get(`/domain/${format_domain_name}`);
           setDomainData(res.data.data);
           setPageData(res.data.data);
-          setDomainLoading(false);
         } else {
           setPageData(domainData);
-          setDomainLoading(false);
         }
 
         // ✅ 2nd API call: category data
         if (categorySlug) {
-          setCategoryLoading(true);
           const categoryRes = await apiClient.get(
             `/domain/${format_domain_name}/category/${categorySlug}`
           );
           setCategoryData(categoryRes.data.data);
-          setCategoryLoading(false);
         }
 
       } catch (err) {
         console.error("API Error:", err);
-        setDomainLoading(false);
-        setCategoryLoading(false);
       }
     };
 
@@ -133,8 +126,9 @@ const bestExperiences = [
       <PromoBanner1 />
       <CategoryType bestExperiences={bestExperiences} title="Top Attractions in delhi" />
       <PromoBanner2 />
+      <Footer />
     </div>
-  );
-};
+  )
+}
 
 export default AttractionPage;
