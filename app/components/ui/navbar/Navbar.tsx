@@ -21,7 +21,7 @@ const Navbar: React.FC<NavbarProps> = ({ currency, language }) => {
       "/brand_logo_staybook.gif",
     ],
     "agratickets.com": [
-      "/agra_logo.png",
+      "/agralogo.png",
       "/AgraTickets.png",
       "/brand_logo_staybook.gif",
     ],
