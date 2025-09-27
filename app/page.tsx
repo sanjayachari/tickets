@@ -23,7 +23,6 @@ const DelhiTicketsHero: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true); // start loading
 
         // Determine domain dynamically
         let domain_name = "delhitickets.com"; // fallback default
@@ -49,15 +48,6 @@ const DelhiTicketsHero: React.FC = () => {
   }, [setCurrentDomain, setIsLoading]);
 
   console.log('dom' , domainData)
-
-  // ✅ Show single full-page loading if context says loading
-  if (isLoading) {
-    return (
-      <div className="w-full h-screen flex items-center justify-center">
-        <span className="text-lg font-medium">Loading page...</span>
-      </div>
-    );
-  }
 
   // Render full UI after loading
   return (
