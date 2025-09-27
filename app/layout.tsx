@@ -34,6 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description = "Skip-the-line entry to Taj Mahal and Agra Fort";
   }
 
+  console.log('___host' , host)
   return {
     title,
     description,
