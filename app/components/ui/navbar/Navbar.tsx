@@ -16,20 +16,20 @@ const Navbar: React.FC<NavbarProps> = ({ currency, language }) => {
   // ✅ Domain-specific logos
   const logos: { [key: string]: string[] } = {
     "delhitickets.com": [
-      "/delhilogo.png",
-      "/DelhiTickets.png",
+      "/delhilogo.svg",
+      "/DelhiTickets.svg",
       "/brand_logo_staybook.gif",
     ],
     "agratickets.com": [
-      "/agralogo.png",
-      "/AgraTickets.png",
+      "/agralogo.svg",
+      "/AgraTickets.svg",
       "/brand_logo_staybook.gif",
     ],
   };
 
   // ✅ Default to Delhi logos if domain not found
   const currentLogos =
-    logos[currentDomain] || ["/delhilogo.png", "/DelhiTickets.png", "/brand_logo_staybook.gif"];
+    logos[currentDomain] || ["/delhilogo.svg", "/DelhiTickets.svg", "/brand_logo_staybook.gif"];
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
