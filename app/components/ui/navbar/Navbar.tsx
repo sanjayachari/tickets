@@ -1,4 +1,6 @@
 "use client";
+
+import { useDomain } from "@/app/context/Domain";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -9,27 +11,41 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ currency, language }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { currentDomain } = useDomain(); // ✅ get current domain
+
+  // ✅ Domain-specific logos
+  const logos: { [key: string]: string[] } = {
+    "delhitickets.com": [
+      "/delhilogo.png",
+      "/DelhiTickets.png",
+      "/brand_logo_staybook.gif",
+    ],
+    "agratickets.com": [
+      "/agra_logo.png",
+      "/AgraTickets.png",
+      "/brand_logo_staybook.gif",
+    ],
+  };
+
+  const currentLogos = logos[currentDomain] || [
+    "/default_logo.png",
+    "/DefaultTickets.png",
+    "/brand_logo_staybook.gif",
+  ];
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20 flex justify-between items-center py-3">
         {/* Left: Logo + Branding */}
         <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-wrap">
-          <img
-            src="/taj_brand_logo.png"
-            alt="Delhi Tickets Logo"
-            className="w-12 h-12 sm:w-16 sm:h-16 rounded"
-          />
-          <img
-            src="/DelhiTickets.png"
-            alt="Delhi Tickets Text Logo"
-            className="h-8 sm:h-10"
-          />
-          <img
-            src="/brand_logo_staybook.gif"
-            alt="Staybook Logo"
-            className="h-12 sm:h-16"
-          />
+          {currentLogos.map((logo, idx) => (
+            <img
+              key={idx}
+              src={logo}
+              alt={`Logo ${idx}`}
+              className="h-8 sm:h-12 rounded"
+            />
+          ))}
         </Link>
 
         {/* Right: Currency & Language */}
