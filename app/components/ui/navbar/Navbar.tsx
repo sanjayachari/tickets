@@ -27,11 +27,9 @@ const Navbar: React.FC<NavbarProps> = ({ currency, language }) => {
     ],
   };
 
-  const currentLogos = logos[currentDomain] || [
-    "/default_logo.png",
-    "/DefaultTickets.png",
-    "/brand_logo_staybook.gif",
-  ];
+  // ✅ Default to Delhi logos if domain not found
+  const currentLogos =
+    logos[currentDomain] || ["/delhilogo.png", "/DelhiTickets.png", "/brand_logo_staybook.gif"];
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
