@@ -12,43 +12,49 @@ import Experiences2 from "./components/ui/home/Experience2";
 import HomeAbout from "./components/ui/home/HomeAbout";
 import SubscribeCard from "./components/ui/home/SubscribeCard";
 import Navbar from "./components/ui/navbar/Navbar";
-import apiClient from "./lib/helper/apiClient";
 import { useDomain } from "./context/Domain";
+import { DomainRequests } from "./lib/api/ticket/domainRequest";
+import { DomainData } from "./classes/DomainData";
 
 const DelhiTicketsHero: React.FC = () => {
   const [currency] = useState<string>("INR");
   const [language] = useState<string>("En");
-  const { currentDomain, setCurrentDomain, isLoading, setIsLoading , setDomainData , domainData } = useDomain();
+  const { setCurrentDomain, setIsLoading , setDomainData , domainData } = useDomain();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-
-        // Determine domain dynamically
-        let domain_name = "delhitickets.com"; // fallback default
-        if (typeof window !== "undefined") {
-          const hostname = window.location.hostname;
-          console.log('hostname' , hostname)
-          domain_name = hostname === "localhost"
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      // Determine domain dynamically
+      let domain_name = "delhitickets.com"; // fallback default
+      if (typeof window !== "undefined") {
+        const hostname = window.location.hostname;
+        console.log("hostname", hostname);
+        domain_name =
+          hostname === "localhost"
             ? "delhitickets.com"
             : hostname.replace(/^www\./, "");
-        }
-
-        setCurrentDomain(domain_name);
-        const res = await apiClient.get(`/domain/${domain_name}`);
-        setDomainData(res.data.data);
-
-      } catch (err) {
-        console.error("API Error:", err);
-      } finally {
-        setIsLoading(false); // end loading
       }
-    };
 
-    fetchData();
-  }, [setCurrentDomain, setIsLoading]);
+      setCurrentDomain(domain_name);
 
-  console.log('dom' , domainData)
+      // ✅ Use typed API call
+      const res = await DomainRequests.fetchDomainData({ domain: domain_name });
+
+      if (res.status) {
+        console.log("domain data", res.data);
+        setDomainData(res.data as DomainData);
+      } else {
+        console.error("Domain API Error:", res.error);
+      }
+    } catch (err) {
+      console.error("Unexpected API Error:", err);
+    } finally {
+      setIsLoading(false); // end loading
+    }
+  };
+
+  fetchData();
+}, [setCurrentDomain, setIsLoading]);
 
   // Render full UI after loading
   return (
@@ -67,10 +73,10 @@ const DelhiTicketsHero: React.FC = () => {
         <div className="absolute inset-0 bg-black/40 flex items-end">
           <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-8 sm:py-10 md:py-12 text-white">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
-              {domainData?.domain_name}
+              {domainData?.domain_City}
             </h1>
             <p className="mt-3 text-sm sm:text-base md:text-lg leading-relaxed max-w-3xl">
-              {domainData?.description}
+              {domainData?.domain_Description}
             </p>
           </div>
         </div>

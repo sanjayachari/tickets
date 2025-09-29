@@ -58,7 +58,7 @@ export default function TicketCard({
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-3 border-t pt-2 gap-2 sm:gap-0">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-3 pt-2 gap-2 sm:gap-0">
           {/* Rating */}
           <div>
             <p className="text-green-700 font-semibold text-sm">Excellent</p>

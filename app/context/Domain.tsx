@@ -1,15 +1,15 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { DomainDataType } from "../lib/api";
+import { DomainData } from "../classes/DomainData";
 
 type DomainContextType = {
   currentDomain: string;
   setCurrentDomain: (domain: string) => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
-  domainData: DomainDataType | null;
-  setDomainData: (data: DomainDataType | null) => void;
+  domainData: DomainData | null;
+  setDomainData: (data: DomainData | null) => void;
 };
 
 const DomainContext = createContext<DomainContextType>({
@@ -24,7 +24,7 @@ const DomainContext = createContext<DomainContextType>({
 type DomainProviderProps = {
   children: ReactNode;
   initialDomain?: string;
-  initialData?: DomainDataType | null;
+  initialData?: DomainData | null;
 };
 
 export const DomainProvider = ({
@@ -34,7 +34,7 @@ export const DomainProvider = ({
 }: DomainProviderProps) => {
   const [currentDomain, setCurrentDomain] = useState<string>(initialDomain);
   const [isLoading, setIsLoading] = useState<boolean>(!initialDomain);
-  const [domainData, setDomainData] = useState<DomainDataType | null>(initialData);
+  const [domainData, setDomainData] = useState<DomainData | null>(initialData);
 
   useEffect(() => {
     if (initialDomain) {
