@@ -1,5 +1,6 @@
 import React from "react";
 import CategorySection from "./CategorySection";
+import { POIItem } from "@/app/page";
 
 const landmarks = [
   {
@@ -43,7 +44,13 @@ const museums = [
   },
 ];
 
-const Experiences1: React.FC = () => {
+interface ExperiencesProps {
+  formattedPoiItems:any;
+}
+
+
+const Experiences1: React.FC<ExperiencesProps> = ({formattedPoiItems}) => {
+  console.log('poiItems:::::::' , formattedPoiItems[1])
   return (
     <div className="bg-white">
       {/* Explore Dubai */}

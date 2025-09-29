@@ -1,8 +1,13 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import CategorySection from "./CategorySection";
 import Link from "next/link";
 import { ChevronRight, MapPin, Star } from "lucide-react";
+import { DomainRequests } from "@/app/lib/api/ticket/domainRequest";
+import { DomainErrorResponse } from "@/app/lib/api/ticket/requestParams";
+import { collection, getDocs, limit, query, where } from "firebase/firestore";
+import { db } from "@/app/lib/firebase.index";
+import { POIItem } from "@/app/page";
 
 // Data Objects
 const topAttractions = [
@@ -52,7 +57,7 @@ const bestExperiences = [
   },
 ];
 
-const categories = [
+const categoriesTypes = [
   { name: "All", icon: "/icons/grid_view.png" },
   { name: "Landmarks", icon: "/icons/landmark.png" },
   { name: "Museums", icon: "/icons/museum.png" },
@@ -104,16 +109,187 @@ const museums = [
   },
 ];
 
-const Experiences: React.FC = () => {
+interface Category {
+  category_Id: number;
+  category_Slug: string;
+  category_Domain_Name: string;
+  category_Name: string;
+  category_Title?: string;
+  category_Info?: string;
+  category_Description?: string;
+  category_Image_Url?: string;
+  category_Meta_Data?: {
+    title?: string;
+    keywords?: string;
+    description?: string;
+    image_url?: string;
+    canonical_url?: string;
+  };
+  category_Availability?: boolean;
+  category_Is_Top_Attraction?: boolean;
+  category_Is_Popular_Category?: boolean;
+  category_Created_At?: string;
+  category_Updated_At?: string;
+}
+
+
+
+interface TourItem {
+  id: string;
+  tour_Name: string;
+  tour_Covered_City: string[];
+  tour_Image_Url?: string;
+  [key: string]: any;
+}
+
+interface ExperiencesProps {
+  setPoiItems: React.Dispatch<React.SetStateAction<POIItem[]>>;
+  poiItems: POIItem[]
+  setFormattedPoiItems: React.Dispatch<React.SetStateAction<any>>;
+}
+
+const Experiences: React.FC<ExperiencesProps> = ({setPoiItems , poiItems , setFormattedPoiItems}) => {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  return (
+
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoading(true);
+
+      const response = await DomainRequests.fetchCategoryData({
+        domain: "delhitickets", // domain slug
+      });
+      console.log("response____", response);
+      if (response.status && response.data) {
+        // assuming categories are in response.data.categories
+        const domainCategories: Category[] = response.data;
+        console.log("domainCategories", domainCategories);
+        setCategories(domainCategories);
+      } else {
+        const err = response as DomainErrorResponse;
+        setError(err.message);
+      }
+
+      setLoading(false);
+    };
+
+    fetchCategories();
+  }, []);
+
+  const [loadingPOI, setLoadingPOI] = useState<boolean>(true);
+  const [errorPOI, setErrorPOI] = useState<string | null>(null);
+
+  // Fetch POI (your existing useEffect)
+  useEffect(() => {
+    const fetchPOI = async () => {
+      setLoadingPOI(true);
+      try {
+        const poiRef = collection(
+          db,
+          "TOUR-AND-TRAVELS-INFORMATION/IN/POINT-OF-INTEREST-INFORMATION"
+        );
+        const q = query(poiRef, where("destination_City_Code", "==", "delhi"));
+        const querySnapshot = await getDocs(q);
+
+        const poiList: POIItem[] = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...(doc.data() as any),
+        }));
+
+        console.log("poiList____", poiList);
+        setPoiItems(poiList);
+      } catch (err: any) {
+        console.error("Firebase fetch error:", err);
+        setErrorPOI(err.message);
+      }
+      setLoadingPOI(false);
+    };
+
+    fetchPOI();
+  }, []);
+
+  const [tourItems, setTourItems] = useState<TourItem[]>([]);
+const [loadingTours, setLoadingTours] = useState(false);
+const [errorTours, setErrorTours] = useState<string | null>(null);
+
+useEffect(() => {
+  const fetchTours = async () => {
+    setLoadingTours(true);
+    try {
+      const toursRef = collection(
+        db,
+        "TOUR-AND-TRAVELS-INFORMATION/IN/TOUR-PACKAGE-INFORMATION"
+      );
+
+      // Firestore array-contains query
+      const q = query(toursRef, where("tour_City_Covered", "array-contains", "Delhi"),
+            limit(4)
+
+    );
+
+      const querySnapshot = await getDocs(q);
+
+      const toursList: TourItem[] = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as any),
+      }));
+
+      console.log("toursList____", toursList);
+      setTourItems(toursList);
+    } catch (err: any) {
+      console.error("Firebase fetch tours error:", err);
+      setErrorTours(err.message);
+    }
+    setLoadingTours(false);
+  };
+  fetchTours();
+}, []);
+
+
+  // Group POIs by destination_Category, sort by count descending, and limit categories/items
+  const poiByCategorySortedLimited = useMemo(() => {
+    const grouped: Record<string, POIItem[]> = {};
+
+    // Group by category
+    poiItems.forEach((item) => {
+      const category = item.destination_Category || "Uncategorized";
+      if (!grouped[category]) grouped[category] = [];
+      grouped[category].push(item);
+    });
+
+    // Convert to array of [category, items] and sort by length descending
+    const sorted = Object.entries(grouped)
+      .sort((a, b) => b[1].length - a[1].length)
+      .slice(0, 6) // Take only top 6 categories
+      .map(
+        ([category, items]) =>
+          [category, items.slice(0, 6)] as [string, POIItem[]]
+      ); // Limit each category to 6 items
+
+    return sorted; // [[category, items], ...] sorted & limited
+  }, [poiItems]);
+
+  console.log(
+    "poiByCategorySortedLimited",
+    poiByCategorySortedLimited?.[0]?.[1]
+  );
+
+// Update state when the sorted & limited list changes
+useEffect(() => {
+  setFormattedPoiItems(poiByCategorySortedLimited);
+}, [poiByCategorySortedLimited]);
+
+return (
     <div className="bg-white">
       {/* Top Attractions */}
       <section className="bg-[#F1F6FF] py-10">
         <div className="max-w-[1440px] mx-auto px-4 md:px-20">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold bg-gradient-to-r from-green-800 via-green-600 to-yellow-500 bg-clip-text text-transparent">
-              Top Attraction in Dubai
+              Top Attraction in Delhi
             </h2>
             <Link
               href="/attractions"
@@ -124,22 +300,82 @@ const Experiences: React.FC = () => {
           </div>
 
           <div className="flex gap-4 md:gap-6 overflow-x-auto pb-2 no-scrollbar">
-            {topAttractions.map((item, i) => (
-              <div
-                key={i}
-                className="relative h-[230px] w-[150px] md:h-[300px] md:w-[240px] rounded-xl overflow-hidden shadow flex-shrink-0"
-              >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                  <h3 className="text-white font-semibold">{item.title}</h3>
-                  <p className="text-gray-200 text-sm">{item.price}</p>
+            {poiByCategorySortedLimited.length > 0 &&
+              poiByCategorySortedLimited[0][1].length > 0 &&
+              poiByCategorySortedLimited[0][1].map((poi) => (
+                <div
+                  key={poi.id}
+                  className="relative h-[230px] w-[150px] md:h-[300px] md:w-[240px] rounded-xl overflow-hidden shadow flex-shrink-0"
+                >
+                  <img
+                    src={poi.image_url || "/fallback/fallback.png"}
+                    alt={poi.name}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                    <h3 className="text-white font-semibold line-clamp-2">
+                      {poi.destination_City_Slug
+                        ? poi.destination_City_Slug
+                            .split("-")
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            )
+                            .join(" ")
+                        : ""}
+                    </h3>
+
+                    {poi.description && (
+                      <p className="text-gray-200 text-sm">{poi.description}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#F1F6FF] py-10">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-20">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-black bg-clip-text">
+              Popular categories
+            </h2>
+            <Link
+              href="/attractions"
+              className="text-blue-600 text-sm font-semibold flex items-center gap-1"
+            >
+              See all <ChevronRight className="h-5 w-5 text-black" />
+            </Link>
+          </div>
+
+          <div className="flex gap-4 md:gap-6 overflow-x-auto pb-2 no-scrollbar">
+            {categories.length > 0 ? (
+              categories.map((item) => (
+                <div
+                  key={item.category_Slug}
+                  className="relative h-[230px] w-[150px] md:h-[300px] md:w-[240px] rounded-xl overflow-hidden shadow flex-shrink-0"
+                >
+                  <img
+                    src={item.category_Image_Url}
+                    alt={item.category_Name}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                    <h3 className="text-white font-semibold">
+                      {item.category_Name}
+                    </h3>
+                    {item.category_Title && (
+                      <p className="text-gray-200 text-sm">
+                        {item.category_Title}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500">No categories available.</p>
+            )}
           </div>
         </div>
       </section>
@@ -161,46 +397,48 @@ const Experiences: React.FC = () => {
 
           {/* Responsive Scrollable Container */}
           <div className="flex gap-6 overflow-x-auto md:grid md:grid-cols-4 md:gap-6 no-scrollbar py-2 px-1">
-            {bestExperiences.map((exp, i) => (
-              <div
-                key={i}
-                className="flex-shrink-0 h-[400px] w-64 md:w-full rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition"
-              >
-                <img
-                  src={exp.image}
-                  alt={exp.title}
-                  className="h-60 w-full object-cover"
-                />
-                <div className="p-4 flex flex-col justify-between h-40">
-                  <div className="flex justify-between items-center">
-                    <p className="text-sm text-gray-500">{exp.tag}</p>
-                    <div className="flex items-center gap-1">
-                      <p className="text-sm font-semibold">{exp.rating}</p>
-                      <Star className="h-4 w-4 text-yellow-500 fill-yellow-500 mb-1" />
-                    </div>
-                  </div>
+         {tourItems.length > 0 &&
+  tourItems.slice(0, 6).map((tour, i) => (
+    <div
+      key={tour.id}
+      className="flex-shrink-0 h-[400px] w-64 md:w-full rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition"
+    >
+      <img
+        src={tour.tour_Image_Url || "/fallback/fallback.png"} // fallback if no image
+        alt={tour.tour_Name || "Tour"}
+        className="h-60 w-full object-cover"
+      />
+      <div className="p-4 flex flex-col justify-between h-40">
+        <div className="flex justify-between items-center">
+          <p className="text-sm text-gray-500">{tour.tour_Tag || "Ticket"}</p>
+          <div className="flex items-center gap-1">
+            <p className="text-sm font-semibold">{tour.tour_Rating || "N/A"}</p>
+            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500 mb-1" />
+          </div>
+        </div>
 
-                  <h3 className="font-semibold text-lg text-black">
-                    {exp.title}
-                  </h3>
+   <h3 className="font-semibold text-lg text-black line-clamp-2 break-words">
+  {tour.tour_Name}
+</h3>
 
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 " />
-                    <div className="text-sm ">{exp.location}</div>
-                  </div>
 
-                  <div className="flex justify-between items-center">
-                    <p className="text-gray-700 text-sm">
-                      from-{" "}
-                      <span className="text-red-300 line-through">
-                        {exp.orgPrice}
-                      </span>
-                    </p>
-                    <div className="font-semibold">{exp.price}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
+        <div className="flex items-center gap-2">
+          <div className="text-sm">{tour.tour_Type || "Unknown"}</div>
+        </div>
+
+        <div className="flex justify-between items-center">
+          <p className="text-gray-700 text-sm">
+            
+            <span className="text-red-300 line-through">
+{(tour.tour_Package_Cost_Breakup.total_Price * 1.05).toFixed(0)}
+            </span>
+          </p>
+          <div className="font-semibold">{tour.tour_Package_Cost_Breakup.total_Price || "-"}</div>
+        </div>
+      </div>
+    </div>
+  ))}
+
           </div>
         </div>
       </section>
@@ -210,7 +448,7 @@ const Experiences: React.FC = () => {
         <div className="max-w-[1440px] mx-auto px-4 md:px-20">
           <h2 className="text-2xl font-bold mb-6 text-black">Explore Dubai</h2>
           <div className="flex gap-3 mb-8 overflow-x-auto no-scrollbar px-2">
-            {categories.map((cat, i) => (
+            {categoriesTypes.map((cat, i) => (
               <button
                 key={i}
                 onClick={() => setSelectedCategory(cat.name)}

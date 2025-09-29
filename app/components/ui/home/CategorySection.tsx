@@ -7,20 +7,25 @@ interface Item {
   image: string;
   title: string;
   offer?: string;
+  description?: string; // optional description for POIs
 }
 
 interface CategorySectionProps {
   title: string;
   items: Item[];
   onSeeAll?: () => void; // optional callback
+  seeAllHref?: string; // optional custom link
 }
 
 export default function CategorySection({
   title,
   items,
   onSeeAll,
+  seeAllHref = "/attractions",
 }: CategorySectionProps) {
-  console.log(items);
+
+  console.log('______items____', items)
+
   return (
     <div>
       {/* Header */}
@@ -28,7 +33,7 @@ export default function CategorySection({
         <h3 className="text-xl font-semibold text-black">{title}</h3>
         {onSeeAll && (
           <Link
-            href={"/attractions"}
+            href={seeAllHref}
             onClick={onSeeAll}
             className="text-blue-600 text-sm font-semibold flex items-center gap-1"
           >
@@ -42,17 +47,18 @@ export default function CategorySection({
         {items.map((item, i) => (
           <div
             key={i}
-            className="flex-shrink-0 h-[230px] w-[150px] md:w-full rounded-2xl overflow-hidden shadow-md hover:shadow-md transition relative  md:h-[335px]"
+            className="flex-shrink-0 h-[230px] w-[150px] md:w-full rounded-2xl overflow-hidden shadow-md hover:shadow-md transition relative md:h-[335px]"
           >
             <Image
-              src={item.image}
+              src={item.image || "/fallback/fallback.png"}
               alt={item.title}
               height={400}
               width={400}
               className="w-full h-full object-cover"
             />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/100 to-transparent p-4">
-              <h3 className="text-white font-semibold">{item.title}</h3>
+              <h3 className="text-white font-semibold line-clamp-2">{item.title}</h3>
+
               {item.offer && (
                 <p className="text-sm inline-block rounded-full text-white">
                   {item.offer.split(" ").map((word, idx) => {
@@ -69,6 +75,10 @@ export default function CategorySection({
                     return <span key={idx}> {word} </span>;
                   })}
                 </p>
+              )}
+
+              {item.description && (
+                <p className="text-gray-200 text-sm mt-1 line-clamp-2">{item.description}</p>
               )}
             </div>
           </div>

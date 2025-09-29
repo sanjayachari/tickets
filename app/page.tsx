@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import FooterV1 from "./components/ui/footer/home/FooterV1";
 import DelhiExperiences from "./components/ui/home/Experiences";
 import FlexBanner from "./components/ui/home/FlexBanner";
@@ -16,10 +16,32 @@ import { useDomain } from "./context/Domain";
 import { DomainRequests } from "./lib/api/ticket/domainRequest";
 import { DomainData } from "./classes/DomainData";
 
+export interface POIItem {
+  id: string; // destination_Id
+  name: string; // destination_Name
+  description?: string; // destination_description or destination_Info
+  image_url?: string; // destination_Image_Url
+  destination_City_Code?: string; // destination_City_Code
+  destination_Category?: string; // destination_Category
+  rating?: number; // destination_Rating_Details?.overall_Rating
+  total_Reviews?: number; // destination_Rating_Details?.total_Reviews
+  landmark?: string; // destination_Landmark
+  address?: string; // destination_Address
+  opening_Hours?: string[]; // destination_Opening_Hours
+  map_Url?: string; // destination_Map_Url
+  phone?: string; // destination_Phone
+  website?: string; // destination_Website_Url
+  destination_City_Slug_Name?: string;
+  destination_City_Slug?: string;
+  destination_Name?: string;
+}
+
 const DelhiTicketsHero: React.FC = () => {
   const [currency] = useState<string>("INR");
   const [language] = useState<string>("En");
   const { setCurrentDomain, setIsLoading , setDomainData , domainData } = useDomain();
+  const [poiItems, setPoiItems] = useState<POIItem[]>([]);
+  const [formattedPoiItems, setFormattedPoiItems] = useState<POIItem[]>([]);
 
 useEffect(() => {
   const fetchData = async () => {
@@ -56,6 +78,7 @@ useEffect(() => {
   fetchData();
 }, [setCurrentDomain, setIsLoading]);
 
+
   // Render full UI after loading
   return (
     <div className="w-full ubuntu-light">
@@ -82,9 +105,9 @@ useEffect(() => {
         </div>
       </div>
 
-      <DelhiExperiences />
+      <DelhiExperiences setPoiItems={setPoiItems}  poiItems={poiItems} setFormattedPoiItems={setFormattedPoiItems} />
       <FlexBanner />
-      <Experiences1 />
+      <Experiences1 formattedPoiItems={formattedPoiItems}/>
       <Promo />
       <Experiences2 />
       <HomeAbout />
