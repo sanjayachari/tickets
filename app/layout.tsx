@@ -3,8 +3,9 @@ import { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { headers } from "next/headers";
-import { DomainDataType, getDomainData } from "./lib/api";
+import {  getDomainData } from "./lib/api";
 import { DomainProvider } from "./context/Domain";
+import { DomainData } from "./classes/DomainData";
 
 type RootLayoutProps = { children: ReactNode };
 
@@ -23,10 +24,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const currentHeaders = await headers(); // ✅ await headers()
   const host = currentHeaders.get("x-current-domain") || "delhitickets.com";
 
-  const domainData: DomainDataType | null = await getDomainData(host);
+  const domainData: DomainData | null = await getDomainData(host);
 
-  const title = domainData?.meta_data?.title || "Staybook Tickets";
-  const description = domainData?.meta_data?.description || "Book tickets for attractions with Staybook";
+  const title = domainData?.domain_Meta_Data?.title || "Staybook Tickets";
+  const description = domainData?.domain_Meta_Data?.description || "Book tickets for attractions with Staybook";
 
   return {
     title,
@@ -37,7 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
       url: `https://${host}`,
       images: [
         {
-          url: domainData?.meta_data?.image_url || `https://${host}/og-image.jpg`,
+          url: domainData?.domain_Meta_Data?.image_url || `https://${host}/og-image.jpg`,
           width: 1200,
           height: 630,
           alt: title,
@@ -52,7 +53,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const currentHeaders = await headers(); // ✅ await headers()
   const host = currentHeaders.get("x-current-domain") || "delhitickets.com";
 
-  const domainData: DomainDataType | null = await getDomainData(host);
+  const domainData: DomainData | null = await getDomainData(host);
 
   return (
     <html lang="en">

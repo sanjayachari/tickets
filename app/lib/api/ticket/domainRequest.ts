@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import apiClient from "../../helper/apiClient";
 import { DomainData } from "@/app/classes/DomainData";
 import { DomainErrorResponse, DomainParams, DomainResponse } from "./requestParams";
