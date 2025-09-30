@@ -23,4 +23,5 @@ export interface DomainData {
   domain_Country_Code: string;
   domain_Created_At: string; // ISO timestamp
   domain_Updated_At: string; // ISO timestamp
+  
 }

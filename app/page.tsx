@@ -2,46 +2,80 @@
 
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import FooterV1 from "./components/ui/footer/home/FooterV1";
 import DelhiExperiences from "./components/ui/home/Experiences";
-import FlexBanner from "./components/ui/home/FlexBanner";
 import Experiences1 from "./components/ui/home/Experience1";
-import Promo from "./components/ui/home/Promo";
-import Experiences2 from "./components/ui/home/Experience2";
-import HomeAbout from "./components/ui/home/HomeAbout";
 import SubscribeCard from "./components/ui/home/SubscribeCard";
 import Navbar from "./components/ui/navbar/Navbar";
 import { useDomain } from "./context/Domain";
 import { DomainRequests } from "./lib/api/ticket/domainRequest";
 import { DomainData } from "./classes/DomainData";
 
+// Each POI item
 export interface POIItem {
-  id: string; // destination_Id
-  name: string; // destination_Name
-  description?: string; // destination_description or destination_Info
-  image_url?: string; // destination_Image_Url
-  destination_City_Code?: string; // destination_City_Code
-  destination_Category?: string; // destination_Category
-  rating?: number; // destination_Rating_Details?.overall_Rating
-  total_Reviews?: number; // destination_Rating_Details?.total_Reviews
-  landmark?: string; // destination_Landmark
-  address?: string; // destination_Address
-  opening_Hours?: string[]; // destination_Opening_Hours
-  map_Url?: string; // destination_Map_Url
-  phone?: string; // destination_Phone
-  website?: string; // destination_Website_Url
-  destination_City_Slug_Name?: string;
-  destination_City_Slug?: string;
-  destination_Name?: string;
+  id: string;
+  destination_City_Name: string;
+  destination_Visiting_Places_List: any[]; // Can refine if you have structure
+  destination_Latitude: number;
+  destination_Visiting_Details: any[];
+  destination_Landmark: string;
+  destination_Highlights: string;
+  destination_Slug_Name: string;
+  destination_Country_Code: string;
+  destination_Opening_Hours: string[];
+  destination_General_Info: string;
+  destination_Nerby_List: any[];
+  destination_Nearby_Places_List: any[];
+  destination_Place_Id: string;
+  destination_Longitude: number;
+  destination_State_Code: string;
+  destination_Highlights_List: any[];
+  destination_Address: string;
+  destination_State_Name: string;
+  destination_Info: string;
+  destination_Rating_Details: {
+    overall_Rating: number;
+    rating_Distribution: Record<string, number>;
+    total_Reviews: number;
+  };
+  destination_Visiting_Description: string;
+  destination_Image_Object_List: any[];
+  destination_Name: string;
+  destination_Map_Url: string;
+  destination_Meta_Object_Details: {
+    meta_Title: string;
+    meta_Description: string;
+    meta_Keywords: string;
+  };
+  destination_Id: string;
+  destination_Website_Url: string;
+  destination_City_Slug_Name: string;
+  destination_Near_Train_Station: any;
+  destination_Country_Slug_Name: string;
+  destination_City_Slug: string;
+  destination_State_Slug_Name: string;
+  destination_Category: string;
+  destination_City_Code: string;
+  destination_Business_Status: string;
+  destination_Country_Name: string;
+  destination_Tours_Count: number;
+  destination_Pincode: string | number;
+  destination_Phone: string;
+  destination_Near_Bus_Station: any;
+  destination_Visiting_Info: string;
+  destination_Near_Airport: any;
+  destination_Image_Url: string;
+  destination_description: string;
 }
+
 
 const DelhiTicketsHero: React.FC = () => {
   const [currency] = useState<string>("INR");
   const [language] = useState<string>("En");
   const { setCurrentDomain, setIsLoading , setDomainData , domainData } = useDomain();
   const [poiItems, setPoiItems] = useState<POIItem[]>([]);
-  const [formattedPoiItems, setFormattedPoiItems] = useState<POIItem[]>([]);
+const [formattedPoiItems, setFormattedPoiItems] = useState<[string, POIItem[]][]>([]);
 
 useEffect(() => {
   const fetchData = async () => {
@@ -78,7 +112,7 @@ useEffect(() => {
   fetchData();
 }, [setCurrentDomain, setIsLoading]);
 
-
+  console.log('____domainDatas____' , domainData)
   // Render full UI after loading
   return (
     <div className="w-full ubuntu-light">
@@ -105,12 +139,15 @@ useEffect(() => {
         </div>
       </div>
 
-      <DelhiExperiences setPoiItems={setPoiItems}  poiItems={poiItems} setFormattedPoiItems={setFormattedPoiItems} />
-      <FlexBanner />
-      <Experiences1 formattedPoiItems={formattedPoiItems}/>
-      <Promo />
+      <DelhiExperiences setPoiItems={setPoiItems}  poiItems={poiItems} setFormattedPoiItems={setFormattedPoiItems} formattedPoiItems={formattedPoiItems} 
+      domainData={domainData}
+      />
+      <Experiences1 formattedPoiItems={formattedPoiItems}
+       domainData={domainData}
+      />
+      {/* <Promo />
       <Experiences2 />
-      <HomeAbout />
+      <  /> */}
       <SubscribeCard />
       <FooterV1 />
     </div>
