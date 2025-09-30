@@ -96,3 +96,7 @@ body {
   animation: marquee 20s linear infinite;
 }
 
+.wrapper {
+  @apply container mx-auto max-w-[1200px] p-4 md:px-10 xl:px-0;
+}
+

@@ -6,6 +6,9 @@ import { headers } from "next/headers";
 import {  getDomainData } from "./lib/api";
 import { DomainProvider } from "./context/Domain";
 import { DomainData } from "./classes/DomainData";
+import { Provider } from "react-redux";
+import { store } from "@/store";
+import ReduxProvider from "./lib/redux/ReduxProvider";
 
 type RootLayoutProps = { children: ReactNode };
 
@@ -58,9 +61,11 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ReduxProvider>
         <DomainProvider initialDomain={host} initialData={domainData}>
           {children}
         </DomainProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

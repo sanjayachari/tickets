@@ -5,8 +5,8 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 interface NavbarProps {
-  currency: string;
-  language: string;
+  currency?: string;
+  language?: string;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ currency, language }) => {

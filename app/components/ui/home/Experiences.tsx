@@ -7,10 +7,9 @@ import { ChevronRight, MapPin, Star } from "lucide-react";
 import { DomainRequests } from "@/app/lib/api/ticket/domainRequest";
 import { DomainErrorResponse } from "@/app/lib/api/ticket/requestParams";
 import { collection, getDocs, limit, query, where } from "firebase/firestore";
-import { db } from "@/app/lib/firebase.index";
+import { db } from "@/app/lib/firebase";
 import { POIItem } from "@/app/page";
 import { DomainData } from "@/app/classes/DomainData";
-
 // Data Objects
 const topAttractions = [
   { title: "Burj Khalifa", price: "from INR 21,999", image: "/main.png" },
@@ -414,7 +413,8 @@ const Experiences: React.FC<ExperiencesProps> = ({
           <div className="flex gap-6 overflow-x-auto md:grid md:grid-cols-4 md:gap-6 no-scrollbar py-2 px-1">
             {tourItems.length > 0 &&
               tourItems.slice(0, 6).map((tour, i) => (
-                <div
+                <Link
+                  href={`/attractions/${tour.id || `/attractions`}`}
                   key={tour.id}
                   className="flex-shrink-0 h-[400px] w-64 md:w-full rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition"
                 >
@@ -459,7 +459,7 @@ const Experiences: React.FC<ExperiencesProps> = ({
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
           </div>
         </div>
