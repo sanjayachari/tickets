@@ -12,7 +12,7 @@ const firebaseConfig = JSON.parse(
     ? Buffer.from(firebaseConfigBase64, "base64").toString("utf-8")
     : atob(firebaseConfigBase64)
 );
-
+console.log('fireba_____seConfig' , firebaseConfig)
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 
