@@ -9,6 +9,7 @@ import { TourPackageInfo } from "@/app/classes/tourAndTravels/TourPackageInfo";
 import ImageSlider from "../common/ImageSlider";
 import TourHeadBanner from "./TourHeadBanner";
 import FallbackImage from "../common/FallbackImage";
+import Breadcrumbs from "../common/Breadcrumbs";
 
 interface Props {
   tourData: TourPackageInfo;
@@ -98,176 +99,29 @@ export default function TourBanner({
         </div>
       </div>
 
-      <div className="wrapper relative bg-white max-md:z-10 max-md:-mt-2.5 max-md:overflow-hidden max-md:rounded-t-xl md:block">
-        {/* breadcrumb and highlight section */}
-        <TourHeadBanner
-          featureList={
-            tourData.tour_Type
-              ? [tourData.tour_Type]
-              : ["SightSeeing", "Culture", "Food"]
-          }
-          tourRating={tourData.tour_Rating}
-          totalRatingCount={tourData?.tour_Review_Count}
-          tourDuration={tourData.tour_Duration}
-        />
+      
 
-        {/* trip name and reviews */}
-        <h1 className="text-2xl font-bold text-secondary sm:text-2xl md:text-3xl">
-          {tourData.tour_Name}
-        </h1>
+ <div className="mx-auto max-w-[1200px] pt-4 px-4 md:px-10 xl:px-0 relative max-md:z-10 max-md:-mt-2.5 max-md:overflow-hidden max-md:rounded-t-xl md:block space-y-1">
+  <Breadcrumbs />
 
-        {tourData.tour_Rating ? (
-          <Link href={"#reviews"} className="mt-1 block md:hidden">
-            <div className="flex items-center justify-between">
-              <span>⭐ {tourData.tour_Rating} / 5</span>
-              <span className="border-b border-black">
-                {tourData?.tour_Review_Count} Reviews
-              </span>
-            </div>
-          </Link>
-        ) : null}
-        {/* <p
-          className="mt-0.5 md:hidden"
-          dangerouslySetInnerHTML={{ __html: tourData.tour_Info }}
-        />
+  {/* trip name */}
+  <h1 className="text-2xl font-bold text-gray-700 sm:text-2xl md:text-3xl tracking-tighter">
+    {tourData.tour_Name}
+  </h1>
 
-        {/* images section */}
-        <div className="hidden md:block">
-          <div className="flex h-[240px] w-full gap-2.5 md:my-2 md:h-[400px]">
-            <div className="relative h-full w-full overflow-hidden md:w-[70%] md:rounded-l-lg">
-              {tourImageList[0] ? (
-                <Image
-                  src={tourImageList[0].image_Url}
-                  alt={"main image of trip"}
-                  title={"main image of trip"}
-                  priority
-                  width={800}
-                  height={600}
-                  quality={10}
-                  className="GA_4_TTD_BANNER_TRIGGER w-full h-full object-cover transition-transform duration-300 hover:scale-105 hover:cursor-pointer"
-                  onClick={() => setIsCollegeOpen(true)}
-                />
-              ) : (
-                <FallbackImage />
-              )}
-            </div>
+  {/* highlight & rating section */}
+  <TourHeadBanner
+    featureList={
+      tourData.tour_Type
+        ? [tourData.tour_Type]
+        : ["SightSeeing", "Culture", "Food"]
+    }
+    tourRating={tourData.tour_Rating}
+    totalRatingCount={tourData?.tour_Review_Count}
+    tourDuration={tourData.tour_Duration}
+  />
+</div>
 
-            <div className="hidden h-full w-[40%] gap-2.5 overflow-hidden md:relative md:flex lg:w-[60%]">
-              <div className="flex h-full w-full flex-col space-y-2.5">
-                <div className="h-full overflow-hidden md:relative md:rounded-tr-lg lg:rounded-none">
-                  {tourImageList[1] ? (
-                    <Image
-                      src={tourImageList[1].image_Url}
-                      alt={"trip image 2"}
-                      title={"trip image 2"}
-                      quality={10}
-                      width={400}
-                      height={100}
-                      priority
-                      className="h-full w-full object-cover transition-transform duration-300 hover:scale-105 hover:cursor-pointer"
-                      onClick={() => setIsCollegeOpen(true)}
-                    />
-                  ) : (
-                    <FallbackImage />
-                  )}
-                </div>
-                <div className="h-full overflow-hidden md:relative md:rounded-br-lg lg:rounded-none">
-                  {tourImageList[2] ? (
-                    <>
-                      <Image
-                        src={tourImageList[2].image_Url}
-                        alt={"trip image 2"}
-                        title={"trip image 2"}
-                        quality={10}
-                        width={400}
-                        height={100}
-                        priority
-                        unoptimized
-                        className="GA_4_TTD_BANNER_TRIGGER h-full w-full object-cover transition-transform duration-300 hover:scale-105 hover:cursor-pointer"
-                        onClick={() => setIsCollegeOpen(true)}
-                      />
-                      {tourImageList.length - 3 > 0 && (
-                        <div
-                          onClick={() => setIsCollegeOpen(true)}
-                          className="absolute bottom-4 right-4 flex cursor-pointer items-center justify-center gap-2 rounded-full bg-black/50 p-2 px-4 text-white lg:hidden"
-                        >
-                          <Image
-                            src={"/icons/things-to-do/gallary.svg"}
-                            alt={"trip image 4"}
-                            title={"trip image 4"}
-                            quality={10}
-                            width={400}
-                            height={100}
-                            className="relative h-[15px] w-[15px] object-cover transition-transform duration-300 hover:scale-105 hover:cursor-pointer"
-                          />
-                          {tourImageList.length - 3}+
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <FallbackImage />
-                  )}
-                </div>
-              </div>
-              <div className="hidden h-full w-full flex-col space-y-2.5 lg:flex">
-                <div className="h-full overflow-hidden md:relative md:rounded-tr-lg">
-                  {tourImageList[3] ? (
-                    <Image
-                      src={tourImageList[3].image_Url}
-                      alt={"trip image 2"}
-                      title={"trip image 2"}
-                      quality={10}
-                      width={400}
-                      height={100}
-                      priority
-                      className="GA_4_TTD_BANNER_TRIGGER h-full w-full object-cover transition-transform duration-300 hover:scale-105 hover:cursor-pointer"
-                      onClick={() => setIsCollegeOpen(true)}
-                    />
-                  ) : (
-                    <FallbackImage />
-                  )}
-                </div>
-                <div className="h-full overflow-hidden md:relative md:rounded-br-lg">
-                  {tourImageList[4] ? (
-                    <>
-                      <Image
-                        src={tourImageList[4].image_Url}
-                        alt={"trip image 2"}
-                        title={"trip image 2"}
-                        quality={10}
-                        width={400}
-                        height={100}
-                        priority
-                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105 hover:cursor-pointer"
-                        onClick={() => setIsCollegeOpen(true)}
-                      />
-                      {tourImageList.length - 5 > 0 && (
-                        <div
-                          onClick={() => setIsCollegeOpen(true)}
-                          className="absolute bottom-4 right-4 flex cursor-pointer items-center justify-center gap-2 rounded-full bg-black/50 p-2 px-4 text-white"
-                        >
-                          <Image
-                            src={"/icons/things-to-do/gallary.svg"}
-                            alt={"trip image 4"}
-                            title={"trip image 4"}
-                            quality={10}
-                            width={400}
-                            height={100}
-                            className="GA_4_TTD_BANNER_TRIGGER relative h-[15px] w-[15px] object-cover transition-transform duration-300 hover:scale-105 hover:cursor-pointer"
-                          />
-                          {tourImageList.length - 5}+
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <FallbackImage />
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </header>
   );
 }

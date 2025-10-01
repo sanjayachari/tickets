@@ -7,29 +7,26 @@ interface Item {
   image: string;
   title: string;
   offer?: string;
-  description?: string; // optional description for POIs
-  categoriesTypes?: string;
+  description?: string;
+  categoriesTypes?: string; // Added this field
 }
 
 interface CategorySectionProps {
   title: string;
   items: Item[];
-  onSeeAll?: () => void; // optional callback
-  seeAllHref?: string; // optional custom link
-  categoriesTypes?: string
+  onSeeAll?: () => void;
+  seeAllHref?: string;
 }
 
-export default function CategorySection({
+export default function CategorySectionAttraction({
   title,
   items,
   onSeeAll,
-  seeAllHref = "/attractions",
+  seeAllHref,
 }: CategorySectionProps) {
+  console.log("______items____", items);
 
-  console.log('______items____', items)
-
-
-   const slugify = (text: string) =>
+  const slugify = (text: string) =>
     text
       .toLowerCase()
       .trim()

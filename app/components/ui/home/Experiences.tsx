@@ -284,15 +284,6 @@ const Experiences: React.FC<ExperiencesProps> = ({
     setFormattedPoiItems(poiByCategorySortedLimited);
   }, [poiByCategorySortedLimited]);
 
-  const categoryIcons: Record<string, string> = {
-    Museum: "/icons/museum.png",
-    Park: "/icons/park.png",
-    Landmark: "/icons/landmark.png",
-    Zoo: "/icons/zoo.png",
-    // add more if needed
-  };
-
-  console.log("poiByCategorySortedLimited___", poiByCategorySortedLimited);
 
   return (
     <div className="bg-white">
@@ -409,12 +400,11 @@ const Experiences: React.FC<ExperiencesProps> = ({
             </Link>
           </div>
 
-          {/* Responsive Scrollable Container */}
           <div className="flex gap-6 overflow-x-auto md:grid md:grid-cols-4 md:gap-6 no-scrollbar py-2 px-1">
             {tourItems.length > 0 &&
               tourItems.slice(0, 6).map((tour, i) => (
                 <Link
-                  href={`/attractions/${tour.id || `/attractions`}`}
+                  href={`/things-to-do/${tour.id || `/attractions`}`}
                   key={tour.id}
                   className="flex-shrink-0 h-[400px] w-64 md:w-full rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition"
                 >
@@ -465,7 +455,6 @@ const Experiences: React.FC<ExperiencesProps> = ({
         </div>
       </section>
 
-      {/* Explore Dubai */}
       <section className="py-10">
         <div className="max-w-[1440px] mx-auto px-4 md:px-20">
           {/* Category buttons */}

@@ -116,3 +116,13 @@ body {
   .text-primary { color: #333333; }
   .text-secondary { color: #7E7E7E; }
 }
+
+/* Add this in globals.css or any imported CSS file */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}

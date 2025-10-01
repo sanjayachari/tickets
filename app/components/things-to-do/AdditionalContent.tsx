@@ -1,4 +1,3 @@
-import poi from "@/pages/api/search/poi";
 import React from "react";
 
 interface Props {
@@ -8,7 +7,7 @@ interface Props {
 
 const TourAdditionalContent = (props: Props) => {
   return (
-    <div className="wrapper rounded-2xl border border-gray-300 p-4 text-justify">
+    <div className=" rounded-2xl border border-gray-300 p-4 text-justify">
       <KnowBeforeYouGo tourCity={props.tourCity} tourName={props.tourName} />
       <GettingReadyToGo tourCity={props.tourCity} tourName={props.tourName} />
       <PassportsAndVisas
@@ -328,7 +327,7 @@ const IndiaBookRecommendations = ({
   );
 };
 
-const BookAndFilmRecommendations = ({ tourName, tourCity }) => {
+const BookAndFilmRecommendations = ({ tourName, tourCity } : any ) => {
   return (
     <div className="rounded-lg">
       <h2 className="mt-3 text-xl font-semibold">
@@ -372,7 +371,7 @@ const BookAndFilmRecommendations = ({ tourName, tourCity }) => {
   );
 };
 
-const AboutDrones = ({ tourName, tourCity }) => {
+const AboutDrones = ({ tourName, tourCity } : any) => {
   return (
     <div className="rounded-lg">
       <h2 className="mt-3 text-xl font-semibold">
@@ -419,7 +418,7 @@ const AboutDrones = ({ tourName, tourCity }) => {
   );
 };
 
-const ClimateAndClothing = ({ tourName, tourCity }) => {
+const ClimateAndClothing = ({ tourName, tourCity } : any) => {
   return (
     <div className="rounded-lg">
       <h2 className="mt-3 text-xl font-semibold">
@@ -492,7 +491,7 @@ const ClimateAndClothing = ({ tourName, tourCity }) => {
   );
 };
 
-const KnowBeforeYouGo = ({ tourName, tourCity }) => {
+const KnowBeforeYouGo = ({ tourName, tourCity } : any) => {
   return (
     <div className="rounded-lg">
       <p className="text-gray-700">
@@ -507,7 +506,7 @@ const KnowBeforeYouGo = ({ tourName, tourCity }) => {
   );
 };
 
-const GettingReadyToGo = ({ tourName, tourCity }) => {
+const GettingReadyToGo = ({ tourName, tourCity } : any) => {
   return (
     <div className="rounded-lg">
       <h2 className="mt-3 text-xl font-semibold">Getting Ready to Go</h2>
@@ -584,7 +583,7 @@ const PassportsAndVisas = ({ destinationCountry, visaURL }) => {
   );
 };
 
-const TravelPreparation = ({ trainingType, safetyAdviceLink }) => {
+const TravelPreparation = ({ trainingType, safetyAdviceLink } : any) => {
   return (
     <div className="rounded-lg">
       <h2 className="mt-3 text-xl font-semibold">Travel Preparation</h2>
@@ -659,7 +658,7 @@ const TravelPreparation = ({ trainingType, safetyAdviceLink }) => {
   );
 };
 
-const ConnectivityInfo = ({ country }) => {
+const ConnectivityInfo = ({ country } : any) => {
   const countryCallingInfo = {
     USA: {
       exitCode: "011",
@@ -774,7 +773,7 @@ const ConnectivityInfo = ({ country }) => {
   );
 };
 
-const TourPreparation = ({ tourName, tourCity }) => {
+const TourPreparation = ({ tourName, tourCity } : any) => {
   return (
     <div className="rounded-lg">
       <h2 className="mt-3 text-xl font-semibold">
@@ -843,7 +842,7 @@ const TourPreparation = ({ tourName, tourCity }) => {
   );
 };
 
-const StayingHealthy = ({ destinationName, countryName }) => {
+const StayingHealthy = ({ destinationName, countryName } : any) => {
   return (
     <div className="rounded-lg">
       <h2 className="mt-3 text-xl font-semibold">
@@ -953,7 +952,7 @@ const StayingHealthy = ({ destinationName, countryName }) => {
   );
 };
 
-const TourEtiquette = ({ destinationName }) => {
+const TourEtiquette = ({ destinationName } : any) => {
   return (
     <div className="rounded-lg">
       <h2 className="mt-3 text-xl font-semibold">

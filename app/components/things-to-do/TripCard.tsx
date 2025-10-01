@@ -41,7 +41,7 @@ export default function TripCard({ data, imageHeight, headingType }: Props) {
     <Link
       href={`/things-to-do/${data.tour_Slug_Name}`}
       target="_blank"
-      className="group flex w-full min-w-[250px] snap-start flex-col space-y-4 rounded-md border-2 p-3 md:max-w-xs"
+      className="group flex w-full min-w-[250px] snap-start flex-col space-y-4 rounded-md border border-gray-200 p-3 md:max-w-xs"
     >
       <div className={`relative h-[100px] w-full overflow-hidden rounded`}>
         {data.tour_Image_Url === "" ? (

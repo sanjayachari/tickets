@@ -83,6 +83,7 @@ import { PageRouterQueryParams } from "@/app/classes/queryParams/PageRouterQuery
 import { routerToThingsToDoBookingPage } from "@/app/lib/handler/pageHandler";
 import { notFound } from "next/navigation";
 import Navbar from "@/app/components/ui/navbar/Navbar";
+import ImageGallery from "@/app/components/things-to-do/ImageGallery";
 
 interface tourDataProps {
   tourData: TourPackageInfo;
@@ -511,23 +512,29 @@ useEffect(() => {
         />
       )}
 
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col bg-gray-50">
         {/* tour banner with highlights image section */}
-        <TourBanner
+    
+    <TourBanner
           tourData={tourData}
           setIsCollegeOpen={setIsCollegeOpen}
           tourImageList={imagesList}
         />
-
-        <div className="wrapper flex flex-col-reverse gap-4 border-t-2 lg:flex-row lg:items-start">
+        <div className="wrapper flex flex-col-reverse gap-4 lg:flex-row lg:items-start">
           {/* left side content */}
           <section className="w-full lg:w-[70%]">
+
+        <ImageGallery tourImageList={imagesList} setIsCollegeOpen={setIsCollegeOpen} />
+
+
+       <div className="bg-white p-4 rounded-2xl">
+
             <p
               className="hidden md:block"
               dangerouslySetInnerHTML={{ __html: tourData.tour_Info }}
             />
 
-            {tourPlansList ? (
+             {tourPlansList ? (
               <TourPlansList
                 tourData={tourData}
                 tourPlansList={tourPlansList}
@@ -568,6 +575,7 @@ useEffect(() => {
               tourData.tour_Experience_Itinerary_List.length > 0 && (
                 <TourItinerary data={tourData.tour_Experience_Itinerary_List} />
               )}
+       </div>
           </section>
 
           {/* right side content */}
@@ -587,7 +595,7 @@ useEffect(() => {
           </aside>
         </div>
 
-        <div className="wrapper z-0 my-5 bg-white">{memoizedNearbyList}</div>
+        <div className="wrapper z-0 my-5 bg-white rounded-2xl">{memoizedNearbyList}</div>
 
         {/* Reviews about the tour if exsists */}
         {reviewList && reviewList.length > 0 && (
@@ -605,7 +613,7 @@ useEffect(() => {
         )}
 
         {/* tour accordian data */}
-        <div className="wrapper border-t-2">
+        <div className="wrapper ">
           <h2 className="mb-1 text-lg font-semibold text-secondary sm:text-xl md:text-2xl">
             Tour Details
           </h2>
@@ -730,7 +738,7 @@ useEffect(() => {
 
         {/* Nearby Tours List is exsists */}
         {tourData.tour_More_Info && tourData.tour_More_Info.length > 0 && (
-          <section className="wrapper border-t-2">
+          <section className="wrapper border-t border-gray-200">
             <h2 className="mb-1 text-lg font-semibold text-secondary sm:text-xl md:text-2xl">
               More About this Tour Experience
             </h2>
@@ -747,7 +755,7 @@ useEffect(() => {
             <TourBacklinks data={tourData.tour_City_Covered} />
           )}
 
-        <section className="wrapper border-t-2">
+        <section className="wrapper border-t border-gray-200">
           <h2 className="mb-1 text-lg font-semibold text-secondary sm:text-xl md:text-2xl">
             Know Before You Go
           </h2>

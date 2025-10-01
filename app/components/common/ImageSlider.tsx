@@ -23,7 +23,7 @@ export default function ImageSlider({
       : "/images/placeholder.svg";
 
   return (
-    <div className="group flex min-w-[300px] snap-start flex-col space-y-4 ">
+    <div className="group flex min-w-[300px] snap-start flex-col space-y-4">
       <div className={`relative w-full overflow-hidden ${imageHeight}`}>
         {!imageUrl ? (
           <FallbackImage />

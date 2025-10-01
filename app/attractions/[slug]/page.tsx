@@ -11,6 +11,9 @@ import Navbar from "@/app/components/ui/navbar/Navbar";
 import CategoryTypeV1 from "@/app/components/ui/categoryTypes/CategoryTypeV1";
 import InfiniteCategory from "@/app/components/ui/categoryTypes/InfiniteCategory";
 import Image from "next/image";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "@/app/lib/firebase";
+import { POIItem } from "@/app/page";
 
 const AttractionPage: React.FC = () => {
   const pathname = usePathname(); // e.g., "/category/attractions"
@@ -135,24 +138,84 @@ const AttractionPage: React.FC = () => {
     },
   ];
 
+
+
+
+  const capitalizeFirst = (text: string) =>
+  text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+
+const getPOIsFromUrl = async (url: string) => {
+  try {
+    // ✅ Extract last segment: museum-in-delhi
+    const lastSegment = url.split("/").filter(Boolean).pop() || "";
+
+    // ✅ Split category & city
+    const parts = lastSegment.split("-in-");
+    const categoryRaw = parts[0] || ""; // "museum"
+    const cityRaw = parts[1] || ""; // "delhi"
+
+    // ✅ Proper formats
+    const category = capitalizeFirst(categoryRaw); // "Museum"
+    const city = cityRaw.toLowerCase(); // "delhi"
+    const cityDisplay = capitalizeFirst(cityRaw); // "Delhi"
+
+    // ✅ Firestore query
+    const poiRef = collection(
+      db,
+      "TOUR-AND-TRAVELS-INFORMATION",
+      "IN",
+      "POINT-OF-INTEREST-INFORMATION"
+    );
+
+    console.log('___category' , category)
+
+    const q = query(
+      poiRef,
+      where("destination_Category", "==", category), // "Museum"
+      where("destination_City_Code", "==", city) // "delhi"
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    const data: any[] = [];
+    querySnapshot.forEach((doc) => {
+      data.push({ id: doc.id, ...doc.data() });
+    });
+
+    return { cityDisplay, category, data };
+  } catch (error) {
+    console.error("Error fetching POIs:", error);
+    return null;
+  }
+};
+
+const [poiItems , setPoiItems] = useState<POIItem[]>([])
+const [cityDisplay , setCityDisplay] = useState<string>('')
+const [category , setCategory] = useState<string>('')
+
+useEffect(() => {
+    const fun = async () => {
+      const data = await getPOIsFromUrl(window.location.href);
+      if (data) {
+        console.log('dat' , data)
+        setPoiItems(data.data);
+        setCityDisplay(data.cityDisplay);
+        setCategory(data.category);
+      }
+    }
+
+    fun()
+} , [])
+
   return (
     <div className="w-full ubuntu-light">
       <Navbar currency={currency} language={language} />
       <Banner categoryData={categoryData} domainData={domainData} />
-      {/* <CategoryNav />
-      <Attractions topAttractions={topAttractions}  />
-      <CategoryType bestExperiences={bestExperiences} title="Top Attractions in delhi" />
-      <CategoryType bestExperiences={bestExperiences} title="Top Attractions in delhi" />
-      <PromoBanner />
-      <CategoryType bestExperiences={bestExperiences} title="Top Attractions in delhi" />
-      <PromoBanner1 />
-      <CategoryType bestExperiences={bestExperiences} title="Top Attractions in delhi" />
-      <PromoBanner2 /> */}
       <CategoryTypeV1 />
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20 flex justify-between items-center py-3">
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold text-black">Top Attractions</h2>
+        <div className="w-full">
+          <div className="flex items-center justify-between mb-4 w-full">
+            <h2 className="text-2xl font-bold text-black">Top {category}s</h2>
             <div className="flex gap-2">
               <button
                 type="button"
@@ -177,16 +240,21 @@ const AttractionPage: React.FC = () => {
               </div>
             </div>
           </div>{" "}
-          <InfiniteCategory />
-          <InfiniteCategory />
-          <InfiniteCategory />
+
+        </div>
+      </div>
+
+       <div className="p-4 w-full">
+  <InfiniteCategory items={poiItems} cityDisplay={cityDisplay} category={category} />
+</div>
+
+              {/* <InfiniteCategory />
+          <InfiniteCategory /> */}
           <div className="flex justify-center items-center py-4">
-            <div className="w-[200px] p-2 border-2 border-black rounded-3xl flex justify-center items-center">
+            <div className="w-[200px] p-2 rounded-3xl flex justify-center items-center">
               Show more
             </div>
           </div>
-        </div>
-      </div>
     </div>
   );
 };

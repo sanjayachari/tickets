@@ -220,17 +220,17 @@ export const TourPlansInfo = ({
 
   console.log('availablePlanD__ata' , availablePlanData)
   console.log('isA' , isActive)
-  console.log('======' , availablePlanData?.plan_Count)
+  console.log('======' , tourPlanInfo)
   return (
     <div
-      className={`flex w-full flex-col rounded-lg border-secondary ${isActive ? "border-2" : "cursor-pointer border hover:shadow-md"}`}
+      className={`flex w-full flex-col rounded-lg border-gray-200 ${isActive ? "border" : "cursor-pointer border hover:shadow-md"}`}
     >
       <div className="flex w-full p-3 sm:p-5" onClick={activatePlan}>
         <div className="flex w-full flex-col">
           <div className="flex items-center">
             <div className="flex w-full">
               <div
-                className={`mr-2 h-5 w-5 flex-shrink-0 rounded-full border-2 border-secondary ${isActive ? "bg-primary" : ""}`}
+                className={`mr-2 h-5 w-5 flex-shrink-0 rounded-full border border-secondary ${isActive ? "bg-primary" : ""}`}
               />
               <h3 className="text-lg font-semibold leading-none">
                 {tourPlanInfo.tourPlan_Title}
@@ -340,7 +340,7 @@ export const TourPlansInfo = ({
       </div>
 
       <div
-        className={`h-[1px] w-full bg-gray-400 ${isActive ? "" : "md:hidden"}`}
+        className={`h-[1px] w-full bg-gray-200 ${isActive ? "" : "md:hidden"}`}
       />
 
       {isActive && (
@@ -425,7 +425,7 @@ export const TourPlansInfo = ({
                   ) : (
                     <button
                       onClick={addTourPlan}
-                      className="GA_4_TTD_ADD_PLANS h-11 w-full whitespace-nowrap rounded-full bg-primary px-5 py-2 font-semibold text-black bg-yellow-200 hover:shadow-md md:w-fit"
+                      className="GA_4_TTD_ADD_PLANS h-10 w-full whitespace-nowrap rounded-full bg-primary px-5 py-1 font-semibold text-white bg-yellow-400 hover:shadow-md md:w-fit"
                     >
                       Add Plan
                     </button>

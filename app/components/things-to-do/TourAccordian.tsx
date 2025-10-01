@@ -40,7 +40,7 @@ export default function TourAccordian({
   type = "text",
 }: Props) {
   return (
-    <article className="flex w-full flex-col gap-2 py-2.5 text-justify max-md:border-b md:flex-row">
+    <article className="flex w-full flex-col gap-2 py-2.5 text-justify max-md:border border-gray-200 md:flex-row">
       <div
         className="flex min-w-[220px] justify-between"
         onClick={() => handleToggle(sectionKey)}

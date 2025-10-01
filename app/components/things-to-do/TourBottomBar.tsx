@@ -64,7 +64,7 @@ export default function TourBottomBar({
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-20 border-t-2 bg-white shadow-md transition-transform duration-300 ${
+      className={`fixed inset-x-0 bottom-0 z-20 border-t border-gray-200 bg-white shadow-md transition-transform duration-300 ${
         isVisible ? "translate-y-0" : "translate-y-full"
       }`}
     >

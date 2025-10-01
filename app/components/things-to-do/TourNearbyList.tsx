@@ -61,7 +61,7 @@ export default function TourNearbyList({ tourSlug, data, tourType }: Props) {
   if (!nearbyList.length) return null;
 
   return (
-    <section className="relative">
+    <section className="relative p-2 rounded-md">
       <h2 className="text-lg font-semibold text-secondary sm:text-xl md:text-2xl">
         Nearby Tours
       </h2>

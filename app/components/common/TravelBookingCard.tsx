@@ -35,6 +35,7 @@ import TimeSlotSelector from "./TimeSlotSelector";
 import { useOutsideClick } from "@/app/hooks/useOutsideClick";
 import { PriceSkeleton } from "../skeleton/Skeletons";
 import ThingsToDoCalendar from "../things-to-do/ThingsToDoCal";
+import PromoBanner from "./PromoBanner";
 
 interface Props {
   maxAdultCount: number;
@@ -139,8 +140,10 @@ export default function TourBookingCard({
   const childCountHandler = (change: number = 1) => {};
 
   return (
-    <div className="flex w-full flex-col space-y-2">
-      <div className="w-full space-y-3 rounded-lg border-2 p-4 lg:shadow-lg">
+   <div className="flex flex-col gap-2">
+    <div className="w-full bg-white md:block hidden"><PromoBanner /></div>
+     <div className="flex w-full flex-col space-y-2">
+      <div className="w-full space-y-3 rounded-2xl p-4 lg:shadow-lg border border-gray-300 bg-white">
         <div ref={selectionRef}>
           {bookingCardLoading || lowestPrice === null ? (
             <PriceSkeleton />
@@ -159,6 +162,23 @@ export default function TourBookingCard({
           )}
         </div>
 
+                 <div className="flex w-full items-center">
+          {/* Left circle */}
+          <div className="absolute -left-[1px] h-[30px] w-[16px] rounded-br-full rounded-tr-full border-b border-r border-t border-gray-300 bg-gray-100" />
+
+          {/* Dashed Line */}
+          <div
+            className="mx-6 h-[2px] grow opacity-30"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(to right, black 0, black 4px, transparent 4px, transparent 12px)",
+            }}
+          />
+
+          {/* Right circle */}
+          <div className="absolute -right-[1px] h-[30px] w-[16px] rounded-bl-full rounded-tl-full border-b border-l border-t border-gray-300 bg-gray-100" />
+        </div>
+
         {/* Date Selection */}
         <div ref={calendarRef} className="relative">
           <div
@@ -172,7 +192,7 @@ export default function TourBookingCard({
           </div>
 
           {calendarModel && (
-            <div className="absolute left-0 top-10 z-10 w-fit rounded-lg border border-gray-300 shadow-xl">
+            <div className="absolute left-0 top-10 z-10 w-fit rounded-lg border border-gray-200 shadow-xl">
               <ThingsToDoCalendar
                 checkInDate={tourStartDate}
                 setSelectedCheckInDay={(sDate: Date) => {
@@ -293,5 +313,6 @@ export default function TourBookingCard({
         </div>
       )}
     </div>
+   </div>
   );
 }

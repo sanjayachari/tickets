@@ -1,10 +1,14 @@
 import React from "react";
-import CategorySection from "./CategorySection";
-import FlexBanner from "./FlexBanner";
-import Promo from "./Promo";
-import HomeAbout from "./HomeAbout";
+import CategorySection from "../home/CategorySection";
+import FlexBanner from "../home/FlexBanner";
+import Promo from "../home/Promo";
+import HomeAbout from "../home/HomeAbout";
 import { POIItem } from "@/app/page";
 import { DomainData } from "@/app/classes/DomainData";
+import PromoBanner1 from "./PromoBanner1";
+import PromoBanner2 from "./PromoBanner2";
+import PromoBanner from "./PromoBanner";
+import CategorySectionAttraction from "./CategorySectionAttraction";
 
 
 interface ExperiencesProps {
@@ -13,12 +17,10 @@ interface ExperiencesProps {
 }
 
 // Components rotation list
-const extraComponents = [FlexBanner, Promo, HomeAbout];
+const extraComponents = [PromoBanner, PromoBanner1, PromoBanner2];
 
-const Experiences1: React.FC<ExperiencesProps> = ({ formattedPoiItems , domainData }) => {
-
-
-  
+const ExperiencesAttraction: React.FC<ExperiencesProps> = ({ formattedPoiItems , domainData }) => {
+  console.log('___formattedPoiItems'  , formattedPoiItems)
   return (
     <div className="bg-white">
       
@@ -37,7 +39,7 @@ const Experiences1: React.FC<ExperiencesProps> = ({ formattedPoiItems , domainDa
             <React.Fragment key={idx}>
               {/* CategorySection inside max-width container */}
               <div className="max-w-[1440px] mx-auto px-4 md:px-20 mb-10">
-                <CategorySection
+                <CategorySectionAttraction
                   title={`${category} in ${domainData && domainData.domain_City}`}
                   items={items.slice(0, 4).map((poi) => ({
                     image: poi.destination_Image_Url || "/fallback/fallback.png",
@@ -45,6 +47,7 @@ const Experiences1: React.FC<ExperiencesProps> = ({ formattedPoiItems , domainDa
                     offer: poi.destination_City_Slug,
                     description: poi.destination_Landmark,
                     categoriesTypes: poi.destination_Category,
+                    city : domainData && domainData.domain_City
                   }))}
                   onSeeAll={() =>
                     console.log(`See all ${category} clicked`)
@@ -66,4 +69,4 @@ const Experiences1: React.FC<ExperiencesProps> = ({ formattedPoiItems , domainDa
   );
 };
 
-export default Experiences1;
+export default ExperiencesAttraction;

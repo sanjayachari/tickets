@@ -41,7 +41,7 @@ function ReviewItem({ review }: { review: Review }) {
   const sentences = review.review_Description.split(".").filter(Boolean);
 
   return (
-    <div className="rounded-lg border p-4 shadow-sm">
+    <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
       {/* Review Header */}
       <div className="flex items-center gap-3">
         <FaUserCircle className="text-3xl text-gray-400" />
@@ -212,10 +212,10 @@ export default function TourReviews({
   ];
 
   return (
-    <section id="reviews" className="wrapper border-t-2 pt-5" ref={reviewsRef}>
+    <section id="reviews" className="wrapper border-t border-gray-200 pt-5" ref={reviewsRef}>
       <div className="flex flex-col gap-6 md:flex-row">
         {/* Ratings Sidebar - Adjust for Mobile */}
-        <div className="w-full self-start rounded-lg border bg-white p-4 md:sticky md:top-20 md:w-1/4">
+        <div className="w-full self-start rounded-2xl border border-gray-200 bg-white p-4 md:sticky md:top-20 md:w-1/4">
           <h3 className="text-lg font-semibold text-secondary sm:text-xl md:text-2xl">
             Customer Ratings
           </h3>

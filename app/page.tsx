@@ -69,50 +69,55 @@ export interface POIItem {
   destination_description: string;
 }
 
-
 const DelhiTicketsHero: React.FC = () => {
   const [currency] = useState<string>("INR");
   const [language] = useState<string>("En");
-  const { setCurrentDomain, setIsLoading , setDomainData , domainData } = useDomain();
+  const { setCurrentDomain, setIsLoading, setDomainData, domainData } =
+    useDomain();
   const [poiItems, setPoiItems] = useState<POIItem[]>([]);
-const [formattedPoiItems, setFormattedPoiItems] = useState<[string, POIItem[]][]>([]);
+  const [formattedPoiItems, setFormattedPoiItems] = useState<
+    [string, POIItem[]][]
+  >([]);
 
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      // Determine domain dynamically
-      let domain_name = "delhitickets.com"; // fallback default
-      if (typeof window !== "undefined") {
-        const hostname = window.location.hostname;
-        console.log("hostname", hostname);
-        domain_name =
-          hostname === "localhost"
-            ? "delhitickets.com"
-            : hostname.replace(/^www\./, "");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Determine domain dynamically
+        let domain_name = "delhitickets.com"; // fallback default
+        if (typeof window !== "undefined") {
+          const hostname = window.location.hostname;
+          console.log("hostname", hostname);
+          domain_name =
+            hostname === "localhost"
+              ? "delhitickets.com"
+              : hostname.replace(/^www\./, "");
+        }
+
+        setCurrentDomain(domain_name);
+
+        // ✅ Use typed API call
+        const res = await DomainRequests.fetchDomainData({
+          domain: domain_name,
+        });
+
+        if (res.status) {
+          console.log("domain data", res.data);
+          setDomainData(res.data as DomainData);
+        } else {
+          console.error("Domain API Error:", res.error);
+        }
+      } catch (err) {
+        console.error("Unexpected API Error:", err);
+      } finally {
+        setIsLoading(false); // end loading
       }
+    };
 
-      setCurrentDomain(domain_name);
+    fetchData();
+  }, [setCurrentDomain, setIsLoading]);
 
-      // ✅ Use typed API call
-      const res = await DomainRequests.fetchDomainData({ domain: domain_name });
-
-      if (res.status) {
-        console.log("domain data", res.data);
-        setDomainData(res.data as DomainData);
-      } else {
-        console.error("Domain API Error:", res.error);
-      }
-    } catch (err) {
-      console.error("Unexpected API Error:", err);
-    } finally {
-      setIsLoading(false); // end loading
-    }
-  };
-
-  fetchData();
-}, [setCurrentDomain, setIsLoading]);
-
-  console.log('____domainDatas____' , domainData)
+  
+  console.log("____domainDatas____", domainData);
   // Render full UI after loading
   return (
     <div className="w-full ubuntu-light">
@@ -139,11 +144,16 @@ useEffect(() => {
         </div>
       </div>
 
-      <DelhiExperiences setPoiItems={setPoiItems}  poiItems={poiItems} setFormattedPoiItems={setFormattedPoiItems} formattedPoiItems={formattedPoiItems} 
-      domainData={domainData}
+      <DelhiExperiences
+        setPoiItems={setPoiItems}
+        poiItems={poiItems}
+        setFormattedPoiItems={setFormattedPoiItems}
+        formattedPoiItems={formattedPoiItems}
+        domainData={domainData}
       />
-      <Experiences1 formattedPoiItems={formattedPoiItems}
-       domainData={domainData}
+      <Experiences1
+        formattedPoiItems={formattedPoiItems}
+        domainData={domainData}
       />
       {/* <Promo />
       <Experiences2 />

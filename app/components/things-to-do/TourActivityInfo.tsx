@@ -21,7 +21,7 @@ export default function TourActivityInfo({ data, tourOperatorInfo }: Props) {
   };
 
   return (
-    <article className="border-t-2 pt-2">
+    <article className="border-t border-gray-200 pt-2">
       <h2 className="mb-1 text-lg font-semibold text-secondary sm:text-xl md:text-2xl">
         About this Activity
       </h2>

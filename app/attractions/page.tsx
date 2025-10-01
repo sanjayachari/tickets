@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import Navbar from "../components/ui/navbar/Navbar";
 import Banner from "../components/ui/attraction/Banner";
@@ -17,6 +17,11 @@ import PromoBanner1 from "../components/ui/attraction/PromoBanner1";
 import PromoBanner2 from "../components/ui/attraction/PromoBanner2";
 import FooterV1 from "../components/ui/footer/home/FooterV1";
 import Footer from "../components/ui/footer/Footer";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../lib/firebase";
+import { POIItem } from "../page";
+import Experiences1 from "../components/ui/home/Experience1";
+import ExperiencesAttraction from "../components/ui/attraction/ExperienceAttraction";
 
 const AttractionPage: React.FC = () => {
   const pathname = usePathname(); // e.g., "/category/attractions"
@@ -29,6 +34,10 @@ const AttractionPage: React.FC = () => {
   const [categoryData, setCategoryData] = useState<any>(null);
 
   const { currentDomain, setCurrentDomain, domainData, setDomainData } = useDomain();
+  const [poiItems, setPoiItems] = useState<POIItem[]>([]);
+ const [formattedPoiItems, setFormattedPoiItems] = useState<
+    [string, POIItem[]][]
+  >([]);
 
   const topAttractions = [
   { title: "Burj Khalifa", price: "from INR 21,999", image: "/main.png" },
@@ -113,19 +122,82 @@ const bestExperiences = [
     fetchData();
   }, [categorySlug, domainData, setCurrentDomain, setDomainData]);
 
+
+    useEffect(() => {
+      const fetchPOI = async () => {
+        // setLoadingPOI(true);
+        try {
+          const poiRef = collection(
+            db,
+            "TOUR-AND-TRAVELS-INFORMATION/IN/POINT-OF-INTEREST-INFORMATION"
+          );
+          const q = query(poiRef, where("destination_City_Code", "==", "delhi"));
+          const querySnapshot = await getDocs(q);
+  
+          const poiList: POIItem[] = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...(doc.data() as any),
+          }));
+  
+          console.log("poiList____", poiList);
+          setPoiItems(poiList);
+        } catch (err: any) {
+          console.error("Firebase fetch error:", err);
+          // setErrorPOI(err.message);
+        }
+        // setLoadingPOI(false);
+      };
+  
+      fetchPOI();
+    }, []);
+
+    console.log('poiItems' , poiItems)
+
+
+     // Group POIs by destination_Category, sort by count descending, and limit categories/items
+      const poiByCategorySortedLimited = useMemo(() => {
+        const grouped: Record<string, POIItem[]> = {};
+    
+        // Group by category
+        poiItems.forEach((item) => {
+          const category = item.destination_Category || "Uncategorized";
+          if (!grouped[category]) grouped[category] = [];
+          grouped[category].push(item);
+        });
+    
+        // Convert to array of [category, items] and sort by length descending
+        const sorted = Object.entries(grouped)
+          .sort((a, b) => b[1].length - a[1].length)
+          .slice(0, 6) // Take only top 6 categories
+          .map(
+            ([category, items]) =>
+              [category, items.slice(0, 6)] as [string, POIItem[]]
+          ); // Limit each category to 6 items
+    
+        return sorted; // [[category, items], ...] sorted & limited
+      }, [poiItems]);
+    
+      // Update state when the sorted & limited list changes
+      useEffect(() => {
+        setFormattedPoiItems(poiByCategorySortedLimited);
+      }, [poiByCategorySortedLimited]);
+
+      console.log('____formattedPoiItems' , formattedPoiItems)
+
   return (
     <div className="w-full ubuntu-light">
       <Navbar currency={currency} language={language} />
       <Banner categoryData={categoryData} domainData={domainData} />
       <CategoryNav />
-      <Attractions topAttractions={topAttractions}  />
+      {/* <Attractions topAttractions={topAttractions}  />
       <CategoryType bestExperiences={bestExperiences} title="Top Attractions in delhi" />
       <CategoryType bestExperiences={bestExperiences} title="Top Attractions in delhi" />
       <PromoBanner />
       <CategoryType bestExperiences={bestExperiences} title="Top Attractions in delhi" />
       <PromoBanner1 />
       <CategoryType bestExperiences={bestExperiences} title="Top Attractions in delhi" />
-      <PromoBanner2 />
+      <PromoBanner2 /> */}
+      <ExperiencesAttraction formattedPoiItems={formattedPoiItems} domainData={domainData} />
       <Footer />
     </div>
   )

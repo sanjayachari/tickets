@@ -35,12 +35,12 @@ export default function TourBacklinks({ data }: Props) {
   }, [data]);
 
   return (
-    <section className="wrapper space-y-5 border-t-2">
+    <section className="wrapper space-y-5 border-t border-gray-200">
       {isLoading ? (
         <CityTourListSkeleton />
       ) : (
         data.map((city, idx) => (
-          <div key={`${city}-name-${idx}`} className="rounded-xl border-2 p-3 sm:p-5">
+          <div key={`${city}-name-${idx}`} className="rounded-xl border border-gray-200 p-3 sm:p-5">
             <h2 className="mb-1 text-lg font-semibold text-secondary sm:text-xl md:text-2xl">
               Things to do in {city}
             </h2>

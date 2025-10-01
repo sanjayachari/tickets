@@ -18,7 +18,7 @@ export default function TourItinerary({ data }: Props) {
   };
 
   return (
-    <article className="mt-3 w-full border-t-2 pt-2 text-dark">
+    <article className="mt-3 w-full border-t border-gray-200 pt-2 text-dark">
       <h2 className="mb-2 text-lg font-semibold text-secondary sm:text-xl md:text-2xl">
         Itinerary
       </h2>
