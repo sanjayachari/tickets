@@ -138,8 +138,6 @@ export default function TourBookingCard({
 
   const childCountHandler = (change: number = 1) => {};
 
-  console.log('____bookingCardLoading' , bookingCardLoading)
-
   return (
     <div className="flex w-full flex-col space-y-2">
       <div className="w-full space-y-3 rounded-lg border-2 p-4 lg:shadow-lg">

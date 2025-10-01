@@ -763,10 +763,10 @@ useEffect(() => {
 
         {/* bottom price section with check availability */}
         <TourBottomBar
-          // lowestPrice={lowestPrice}
-          // scrollToSelection={scrollToSelection}
-          // availabilityRef={availabilityRef}
-          // createTourBooking={createTourBooking}
+          lowestPrice={lowestPrice}
+          scrollToSelection={scrollToSelection}
+          availabilityRef={availabilityRef}
+          createTourBooking={createTourBooking}
         />
 
         {/* tour options slider */}

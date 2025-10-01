@@ -119,6 +119,8 @@ export const TourPlansInfo = ({
   const maxPlanCount = Object.keys(
     tourPlanInfo.tourPlan_Adult_Price_Date_Map,
   ).length;
+
+  
   const addTourPlan = () => {
     if (!selectedSlot && isTicket) {
       toast.error("Please select visiting time");
@@ -137,10 +139,10 @@ export const TourPlansInfo = ({
       return;
     }
 
-    // if (tourData.tour_Type === "Ticket-Only" && !selectedPickupTime) {
-    //   toast.error("Please select visiting time");
-    //   return;
-    // }
+    if (tourData.tour_Type === "Ticket-Only" && !selectedPickupTime) {
+      toast.error("Please select visiting time");
+      return;
+    }
 
     dispatch(
       addTour({
@@ -218,7 +220,7 @@ export const TourPlansInfo = ({
 
   console.log('availablePlanD__ata' , availablePlanData)
   console.log('isA' , isActive)
-
+  console.log('======' , availablePlanData?.plan_Count)
   return (
     <div
       className={`flex w-full flex-col rounded-lg border-secondary ${isActive ? "border-2" : "cursor-pointer border hover:shadow-md"}`}
@@ -342,7 +344,7 @@ export const TourPlansInfo = ({
       />
 
       {isActive && (
-        <div className="flex w-full flex-col border-2 border-black">
+        <div className="flex w-full flex-col">
           {totalPrice > 0 && isPlanAvailable ? (
             <div
               className={`flex flex-col items-center justify-between space-y-2 rounded-b-md px-3 py-3 align-middle sm:px-5 md:flex-row md:space-x-2 md:space-y-0`}
@@ -423,7 +425,7 @@ export const TourPlansInfo = ({
                   ) : (
                     <button
                       onClick={addTourPlan}
-                      className="GA_4_TTD_ADD_PLANS h-11 w-full whitespace-nowrap rounded-full bg-primary px-5 py-2 font-semibold text-white hover:shadow-md md:w-fit"
+                      className="GA_4_TTD_ADD_PLANS h-11 w-full whitespace-nowrap rounded-full bg-primary px-5 py-2 font-semibold text-black bg-yellow-200 hover:shadow-md md:w-fit"
                     >
                       Add Plan
                     </button>

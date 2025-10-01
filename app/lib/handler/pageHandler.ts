@@ -5,7 +5,13 @@
 // // } from "@/src/utils";
 // import { PageRouterQueryParams } from "../classModels/queryParams/PageRouterQueryParams";
 
-import { PageRouterQueryParams } from "@/app/classes/queryParams/PageRouterQueryParams";
+import { TourBookingDetails } from "@/app/classes/bookings/tourBookingDetails";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+
+interface PageRouterQueryParams {
+  router: AppRouterInstance;
+  searchedQuery: string;
+}
 
 // //////////// Search Router //////////////
 
@@ -704,15 +710,37 @@ import { PageRouterQueryParams } from "@/app/classes/queryParams/PageRouterQuery
 // };
 
 //////////////// things to do /////////////////////
-export const routerToThingsToDoBookingPage = async (
+export const routerToThingsToDoBookingPage = (
   slug: string,
-  params: PageRouterQueryParams,
+  params: PageRouterQueryParams
 ) => {
-  // redirect the user to things-to-do booking page
-  params.router.push({
-    pathname: `/things-to-do/${params.searchedQuery}/${slug}`,
-    // query,
-  });
+  const { router, searchedQuery } = params;
+
+  if (!searchedQuery || !slug) {
+    console.warn("Missing slug or searchedQuery for redirect");
+    return;
+  }
+
+  router.push(`/things-to-do/${searchedQuery}/${slug}`);
+};
+
+
+/**
+ * Redirects the user to the Things-to-Do payment page.
+ */
+export const routerToThingsToDoPaymentPage = (
+  slug: string,
+  params: PageRouterQueryParams
+) => {
+  const { router, searchedQuery } = params;
+
+  if (!searchedQuery || !slug) {
+    console.warn("Missing slug or searchedQuery for redirect");
+    return;
+  }
+
+  // Push to the payment page URL
+  router.push(`/things-to-do/${searchedQuery}/${slug}`);
 };
 
 // export const routerToActivityBookingPage = async (
@@ -782,23 +810,29 @@ export const routerToThingsToDoBookingPage = async (
 //   });
 // };
 
-// export const routerToTourConfirmationPage = (
-//   router: any,
-//   bookingInfo: TourBookingDetails,
-// ) => {
-//   router.replace({
-//     pathname: `/bookingInformation/things-to-do/${bookingInfo.booking_Id}`,
-//     query: {
-//       booking_status: "Booking Successful",
-//       tour_Id: bookingInfo.tour_Slug_Name,
-//       tour_Name: bookingInfo.tour_Name,
-//       user_Name: bookingInfo.user_Name,
-//       user_Email: bookingInfo.user_Email_Id,
-//       user_Phone: bookingInfo.user_Phone_Number,
-//       booking_receipt: bookingInfo.receipt_Id,
-//     },
-//   });
-// };
+export const routerToTourConfirmationPage = (
+  router: any,
+  bookingInfo: TourBookingDetails
+) => {
+  if (!router || !bookingInfo?.booking_Id) {
+    console.warn("Missing router or booking info for redirect");
+    return;
+  }
+
+  router.replace({
+    pathname: `/bookingInformation/things-to-do/${bookingInfo.booking_Id}`,
+    query: {
+      booking_status: "Booking Successful",
+      tour_Id: bookingInfo.tour_Slug_Name,
+      tour_Name: bookingInfo.tour_Name,
+      user_Name: bookingInfo.user_Name,
+      user_Email: bookingInfo.user_Email_Id,
+      user_Phone: bookingInfo.user_Phone_Number,
+      booking_receipt: bookingInfo.receipt_Id,
+    },
+  });
+};
+
 
 // export const routerToActivitiesConfirmationPage = (
 //   router: any,
