@@ -1,6 +1,7 @@
-import { formatDateToString, manipulateDateByDays } from "@/src/utils";
-import { WEBSITE_BASE_URL } from "@/lib/helper";
 import { RoomDetails } from "./roomDetails";
+import { manipulateDateByDays } from "@/app/lib/utils/manipulateDateByDays/manipulateDateByDays";
+import { formatDateToString } from "@/app/lib/utils/formatDateToString/formatDateToString";
+import { WEBSITE_BASE_URL } from "@/app/lib/helper";
 
 export class BookingDetails {
   roomsList: RoomDetails[] = [];

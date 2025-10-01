@@ -1,9 +1,7 @@
-import { formatDateToString } from "@/src/utils";
 
-import {
-  DATE_FORMAT_YYYY_MM_DD,
-  HOTEL_DETAILS_INFORMATION_COLLECTION_NAME,
-} from "@/lib/helper";
+import { DATE_FORMAT_YYYY_MM_DD, HOTEL_DETAILS_INFORMATION_COLLECTION_NAME } from "@/app/lib/helper";
+import { formatDateToString } from "@/app/lib/utils/formatDateToString/formatDateToString";
+
 
 export class WhereQuery {
   field: any = "";

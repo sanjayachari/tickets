@@ -1,4 +1,4 @@
-import { WEBSITE_BASE_URL } from "@/lib/helper";
+import { WEBSITE_BASE_URL } from "@/app/lib/helper";
 import { ActivityGuestPriceMap, PlanDetails } from "./planDetails";
 
 export type GuestDetailInfo = {

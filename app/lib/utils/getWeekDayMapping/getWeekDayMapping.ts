@@ -1,4 +1,3 @@
-import { WeekDay } from "@/lib/classModels/tourAndTravels/TourPlanInformation";
 
 /**
  * Converts a Date object to its corresponding abbreviated weekday name.
@@ -33,8 +32,10 @@ import { WeekDay } from "@/lib/classModels/tourAndTravels/TourPlanInformation";
  * ```
  */
 
+import { WeekDay } from "@/app/classes/tourAndTravels/TourPlanInformation";
+
 export const getWeekDayMapping = (dt: Date): WeekDay => {
-  const weekDays = {
+  const weekDays : any = {
     0: "Sun",
     1: "Mon",
     2: "Tues",

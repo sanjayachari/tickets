@@ -1,4 +1,5 @@
-import { formatDateToString, manipulateDateByDays } from "@/src/utils";
+import { formatDateToString } from "@/app/lib/utils/formatDateToString/formatDateToString";
+import { manipulateDateByDays } from "@/app/lib/utils/manipulateDateByDays/manipulateDateByDays";
 
 export class FetchHotelDetailsQueryParams {
   hotelSlugName: string = "";

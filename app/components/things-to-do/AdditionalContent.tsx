@@ -544,7 +544,7 @@ const GettingReadyToGo = ({ tourName, tourCity } : any) => {
   );
 };
 
-const PassportsAndVisas = ({ destinationCountry, visaURL }) => {
+const PassportsAndVisas = ({ destinationCountry, visaURL } : any ) => {
   return (
     <div className="rounded-lg">
       <h2 className="mt-3 text-xl font-semibold">Passports & Visas</h2>
@@ -659,7 +659,7 @@ const TravelPreparation = ({ trainingType, safetyAdviceLink } : any) => {
 };
 
 const ConnectivityInfo = ({ country } : any) => {
-  const countryCallingInfo = {
+  const countryCallingInfo : any = {
     USA: {
       exitCode: "011",
       countryCode: "49",

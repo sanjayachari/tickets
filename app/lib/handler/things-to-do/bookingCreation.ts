@@ -7,14 +7,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "@/lib/firebase";
-import {
-  convertTo12HourFormat,
-  priceCurrencyConvertor,
-  formatSecondToDaysNights,
-  formatTimestampToDate,
-  formatUTCToIST,
-} from "@/src/utils";
+
 import {
   TOUR_AND_TRAVEL_COLLECTION_NAME,
   TOUR_AND_TRAVELS_INFORMATION_INDIA_DOCUMENT,
@@ -28,13 +21,21 @@ import {
   TOUR_PLANS_BOOKING_COLLECTION_NAME,
   TOUR_AND_TRAVEL_SUB_COLLECTION_NAME,
   PAYMENT_INFO_COLLECTION_NAME,
-} from "@/lib/helper";
-import {
-  mailTransporter,
-  senderEmail,
-} from "@/pages/api/utils/nodemailerService";
-import { TourBookingDetails } from "@/lib/classModels/bookings/tourBookingDetails";
-import { PlanDetails } from "@/lib/classModels/bookings/planDetails";
+} from "../../helper";
+
+
+
+
+
+import { db } from "../../firebase";
+import { mailTransporter, senderEmail } from "@/app/api/utils/nodemailerService";
+import { priceCurrencyConvertor } from "../../utils/priceCurrencyConvertor/priceCurrencyConvertor";
+import { convertTo12HourFormat } from "../../utils/convertTo12HourFormat/convertTo12HourFormat";
+import { TourBookingDetails } from "@/app/classes/bookings/tourBookingDetails";
+import { PlanDetails } from "@/app/classes/bookings/planDetails";
+import { formatTimestampToDate } from "../../utils/formatTimestampToDate/formatTimestampToDate";
+import { formatUTCToIST } from "../../utils/formatUTCToIST/formatUTCToIST";
+import { formatSecondToDaysNights } from "../../utils/formatSecondToDaysNights/formatSecondToDaysNights";
 
 // store in order to get the accurate time of current date
 function getCurentDate() {
@@ -356,7 +357,7 @@ export const staybookTourBookingCreation = async (
   }
 };
 
-const generateCityCoveredHTML = (cities) => {
+const generateCityCoveredHTML = (cities : any) => {
   if (!Array.isArray(cities)) return ""; // Return empty string if input isn’t an array
 
   return cities
