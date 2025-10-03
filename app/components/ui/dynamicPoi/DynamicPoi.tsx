@@ -31,27 +31,30 @@ const DynamicPoiPage: React.FC<DynamicPoiPageProps> = ({ params, subDomain }) =>
   const [poiData, setPoiData] = useState<any>(null);
   const [tourPackages, setTourPackages] = useState<any[]>([]);
 
-  // Determine slug if not provided
+  // 🔹 Determine slug with POI + City
   useEffect(() => {
     if (!slug && typeof window !== "undefined") {
-      if (subDomain) {
-        setSlug(subDomain); // use subdomain if provided
-      } else {
-        const hostname = window.location.hostname.replace(/^www\./, "");
-        const parts = hostname.split(".");
+      const hostname = window.location.hostname.replace(/^www\./, ""); // e.g. taj-mahal.agratickets.com
+      const parts = hostname.split("."); // ["taj-mahal", "agratickets", "com"]
 
-        // subdomain from hostname
-        if (parts.length > 2) {
-          setSlug(parts[0]);
-        } else {
-          const pathSlug = pathname.split("/")[1];
-          setSlug(pathSlug);
-        }
+      if (parts.length > 2) {
+        const poiPart = parts[0]; // e.g. taj-mahal
+        const rootDomain = parts.slice(-2).join("."); // e.g. agratickets.com
+        const city = rootDomain.split(".")[0].replace("tickets", ""); 
+        // 🔹 Here "agratickets" → "agra"
+        // If you have other domains like "delhitickets.com", it becomes "delhi"
+
+        const fullSlug = `${poiPart}-${city}`; // e.g. taj-mahal-agra
+        setSlug(fullSlug);
+      } else {
+        // fallback for normal domain (no subdomain)
+        const pathSlug = pathname.split("/")[1];
+        setSlug(pathSlug);
       }
     }
   }, [slug, pathname, subDomain]);
 
-  // Fetch domain info
+  // 🔹 Fetch domain info
   useEffect(() => {
     const fetchDomain = async () => {
       try {
@@ -72,7 +75,7 @@ const DynamicPoiPage: React.FC<DynamicPoiPageProps> = ({ params, subDomain }) =>
     fetchDomain();
   }, [setCurrentDomain, setDomainData]);
 
-  // Fetch POI & Tours
+  // 🔹 Fetch POI & Tours
   useEffect(() => {
     const fetchPoiAndTours = async () => {
       if (!slug) return;
@@ -80,7 +83,7 @@ const DynamicPoiPage: React.FC<DynamicPoiPageProps> = ({ params, subDomain }) =>
       try {
         setIsLoading(true);
 
-        // 🔹 Fetch POI document
+        // Fetch POI doc
         const poiRef = doc(db, "TOUR-AND-TRAVELS-INFORMATION", "IN", "POINT-OF-INTEREST-INFORMATION", slug);
         const poiSnap = await getDoc(poiRef);
         if (poiSnap.exists()) {
@@ -89,7 +92,7 @@ const DynamicPoiPage: React.FC<DynamicPoiPageProps> = ({ params, subDomain }) =>
           console.warn("No POI found for slug:", slug);
         }
 
-        // 🔹 Fetch Tours that include this POI
+        // Fetch Tours linked to this POI
         const tourRef = collection(db, "TOUR-AND-TRAVELS-INFORMATION", "IN", "TOUR-PACKAGE-INFORMATION");
         const q = query(tourRef, where("tour_Point_Of_Interest_Slug_List", "array-contains", slug));
         const tourSnap = await getDocs(q);
