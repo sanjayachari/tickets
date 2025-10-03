@@ -23,7 +23,7 @@ interface DynamicPoiPageProps {
 const DynamicPoiPage: React.FC<DynamicPoiPageProps> = ({ params, subDomain }) => {
   const [currency] = useState<string>("INR");
   const [language] = useState<string>("En");
-
+    console.log('=======params==' , params)
   const { currentDomain, setCurrentDomain, isLoading, setIsLoading, setDomainData } = useDomain();
   const pathname = usePathname();
   const [slug, setSlug] = useState<string | undefined>(params?.slug || subDomain);
