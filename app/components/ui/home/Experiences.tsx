@@ -10,53 +10,6 @@ import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import { POIItem } from "@/app/page";
 import { DomainData } from "@/app/classes/DomainData";
-// Data Objects
-const topAttractions = [
-  { title: "Burj Khalifa", price: "from INR 21,999", image: "/main.png" },
-  { title: "Dubai Frame", price: "from INR 21,999", image: "/main2.png" },
-  { title: "Burj Al Arab", price: "from INR 21,999", image: "/main3.png" },
-  { title: "Atlantis", price: "from INR 21,999", image: "/main4.png" },
-  { title: "Atlantis", price: "from INR 21,999", image: "/burj.jpeg" },
-];
-
-const bestExperiences = [
-  {
-    title: "Museum of Illusions",
-    tag: "Ticket",
-    rating: "4.5",
-    orgPrice: "₹17,800",
-    price: "₹10,800/Per",
-    image: "/main5.png",
-    location: "Dubai",
-  },
-  {
-    title: "Embarking in a 3-Day Adventure",
-    tag: "Ticket",
-    rating: "4.5",
-    orgPrice: "₹17,800",
-    price: "₹10,800/Per",
-    image: "/main6.png",
-    location: "Dubai",
-  },
-  {
-    title: "Explore Red Fort Skip the ticket",
-    tag: "Ticket",
-    rating: "4.5",
-    orgPrice: "₹9,800",
-    price: "₹4,500/Per",
-    image: "/main7.png",
-    location: "Dubai",
-  },
-  {
-    title: "Timezone Pacific Mall Garden",
-    tag: "Ticket",
-    rating: "4.5",
-    orgPrice: "₹17,800",
-    price: "₹10,800/Per",
-    image: "/main8.png",
-    location: "Dubai",
-  },
-];
 
 const categoriesTypes = [
   { name: "All", icon: "/icons/grid_view.png" },
@@ -66,48 +19,6 @@ const categoriesTypes = [
   { name: "Zoo", icon: "/icons/zoo.png" },
   { name: "Monument", icon: "/icons/monument.png" },
   { name: "Water park", icon: "/icons/waterpark.png" },
-];
-
-const landmarks = [
-  {
-    title: "Burj Khalifa",
-    offer: "6% (38K+ reviews)",
-    image: "/burj.jpeg",
-  },
-  {
-    title: "Museum of the Future",
-    offer: "6% (38K+ reviews)",
-    image: "/burj.jpeg",
-  },
-  { title: "Dubai Frame", offer: "6% (38K+ reviews)", image: "/burj.jpeg" },
-  {
-    title: "Museum of the Future",
-    offer: "6% (38K+ reviews)",
-    image: "/burj.jpeg",
-  },
-];
-
-const museums = [
-  {
-    title: "Dubai Museum",
-    offer: "6% (38K+ reviews)",
-    image: "/burj.jpeg",
-  },
-  {
-    title: "Museum of Illusions",
-    offer: "6% (38K+ reviews)",
-    image: "/burj.jpeg",
-  },
-  {
-    title: "Etihad Museum",
-    offer: "6% (38K+ reviews)",
-    image: "/burj.jpeg",
-  },
-  {
-    title: "Dubai Museum",
-    offer: "6% (38K+ reviews)",
-    image: "/burj.jpeg",
-  },
 ];
 
 interface Category {
@@ -198,7 +109,7 @@ const Experiences: React.FC<ExperiencesProps> = ({
           db,
           "TOUR-AND-TRAVELS-INFORMATION/IN/POINT-OF-INTEREST-INFORMATION"
         );
-        const q = query(poiRef, where("destination_City_Code", "==", "delhi"));
+        const q = query(poiRef, where("destination_City_Code", "==", `${domainData?.domain_City ?? "delhi"}}`));
         const querySnapshot = await getDocs(q);
 
         const poiList: POIItem[] = querySnapshot.docs.map((doc) => ({
