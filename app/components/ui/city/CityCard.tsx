@@ -1,9 +1,12 @@
 "use client";
 
+import { useDomain } from "@/app/context/Domain";
 import Image from "next/image";
+import Link from "next/link";
 
 interface TicketCardProps {
   imageUrl: string;
+  slug: string;
   title: string;
   description: string;
   rating: number;
@@ -16,6 +19,7 @@ interface TicketCardProps {
 
 export default function TicketCard({
   imageUrl,
+  slug,
   title,
   description,
   rating,
@@ -27,8 +31,12 @@ export default function TicketCard({
 }: TicketCardProps) {
   const isGrid = view === "grid";
 
+
+    const { currentDomain } = useDomain(); // ✅ get current domain
+  
   return (
-    <div
+    <Link
+      href={`https://${currentDomain}/things-to-do/${slug}`}
       className={`w-full mx-auto border border-gray-300 border-opacity-10 rounded-2xl shadow-sm overflow-hidden p-2 md:p-3
         flex flex-col ${!isGrid ? "md:flex-row md:gap-4" : ""}`}
     >
@@ -95,6 +103,6 @@ export default function TicketCard({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

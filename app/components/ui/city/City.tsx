@@ -128,7 +128,8 @@ const City = ({ tours = [], poiData }: any) => {
       >
         {tours.map((ticket: any, idx: number) => (
           <TicketCard
-            key={idx}
+            key={idx} 
+            slug={ticket?.tour_Slug_Name}
             imageUrl={ticket?.tour_Image_Url ?? "/city/city1.png"}
             title={ticket?.tour_Name ?? "Untitled Tour"}
             description={ticket?.tour_Description ?? "No description"}

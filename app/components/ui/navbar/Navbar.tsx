@@ -31,11 +31,12 @@ const Navbar: React.FC<NavbarProps> = ({ currency, language }) => {
   const currentLogos =
     logos[currentDomain] || ["/delhilogo.svg", "/DelhiTickets.svg", "/brand_logo_staybook.gif"];
 
+    console.log('currentDomain' , currentDomain)
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20 flex justify-between items-center py-3">
         {/* Left: Logo + Branding */}
-        <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <Link href={`${currentDomain}`} className="flex items-center gap-2 sm:gap-3 flex-wrap">
           {currentLogos.map((logo, idx) => (
             <img
               key={idx}
