@@ -37,6 +37,7 @@ export default function TicketCard({
   return (
     <Link
       href={`https://${currentDomain}/things-to-do/${slug}`}
+      target="_blank"
       className={`w-full mx-auto border border-gray-300 border-opacity-10 rounded-2xl shadow-sm overflow-hidden p-2 md:p-3
         flex flex-col ${!isGrid ? "md:flex-row md:gap-4" : ""}`}
     >
