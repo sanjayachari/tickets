@@ -84,7 +84,10 @@ const City = ({ tours = [], poiData }: any) => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center my-6 gap-4">
         {/* Left side: results */}
         <div className="text-black font-medium text-sm sm:text-base">
-          Humayun Tomb: {tours.length} results
+          {(poiData?.destination_City_Slug_Name?.replace(/-/g, " ") ?? "POIs").replace(
+                /^./,
+                (str: string) => str.toUpperCase()
+              )} : {tours.length} results
         </div>
 
         {/* Right side: toggle (only visible on md+) */}
