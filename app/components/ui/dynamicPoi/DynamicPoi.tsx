@@ -75,6 +75,7 @@ const DynamicPoiPage: React.FC<DynamicPoiPageProps> = ({ params, subDomain }) =>
     fetchDomain();
   }, [setCurrentDomain, setDomainData]);
 
+  console.log('slug__' , slug)
   // 🔹 Fetch POI & Tours
   useEffect(() => {
     const fetchPoiAndTours = async () => {
