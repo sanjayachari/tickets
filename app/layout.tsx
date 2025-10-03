@@ -60,10 +60,11 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const domainData = await getDomainData(resolvedHost);
 
   // Check if it’s a subdomain
-  const isSubdomain = host.split(".").length > 2; // e.g., red-fort-delhi.agratickets.com
+  let isSubdomain = host.split(".").length > 2; // e.g., red-fort-delhi.agratickets.com
   const subDomain = host.split(".")[0]; // e.g., red-fort-delhi
   console.log('____isSubdomain' , isSubdomain)
   console.log('=====' , host.split("."))
+
   return (
     <html lang="en">
       <head>

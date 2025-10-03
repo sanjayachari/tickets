@@ -107,18 +107,19 @@ const City = ({ tours = [], poiData }: any) => {
       {/* Tickets Section */}
       <div className={`${viewMode === "grid" ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" : "flex flex-col gap-4"}`}>
         {tours.map((ticket: any, idx: number) => (
-          <TicketCard
-            key={idx}
-            imageUrl={ticket?.tour_Image_Url ?? "/city/city1.png"}
-            title={ticket?.tour_Name ?? "Untitled Tour"}
-            description={ticket?.tour_Description ?? "No description"}
-            rating={ticket?.tour_Rating ?? 0}
-            reviews={ticket?.tour_Review_Count ?? 0}
-            oldPrice={ticket?.tour_Package_Cost_Breakup?.base_Price ?? 0}
-            newPrice={ticket?.tour_Package_Cost_Breakup?.total_Price ?? 0}
-            discount={ticket?.tour_Package_Cost_Breakup?.tax_Price ?? 0}
-            view={viewMode}
-          />
+         <TicketCard
+  key={idx}
+  imageUrl={ticket?.tour_Image_Url ?? "/city/city1.png"}
+  title={ticket?.tour_Name ?? "Untitled Tour"}
+  description={ticket?.tour_Description ?? "No description"}
+  rating={Number(ticket?.tour_Rating) || 0}
+  reviews={Number(ticket?.tour_Review_Count) || 0}
+  oldPrice={Number(ticket?.tour_Package_Cost_Breakup?.base_Price) || 0}
+  newPrice={Number(ticket?.tour_Package_Cost_Breakup?.total_Price) || 0}
+  discount={Number(ticket?.tour_Package_Cost_Breakup?.tax_Price) || 0}
+  view={viewMode}
+/>
+
         ))}
       </div>
     </div>
