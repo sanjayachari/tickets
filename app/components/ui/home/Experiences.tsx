@@ -109,7 +109,7 @@ const Experiences: React.FC<ExperiencesProps> = ({
           db,
           "TOUR-AND-TRAVELS-INFORMATION/IN/POINT-OF-INTEREST-INFORMATION"
         );
-        const q = query(poiRef, where("destination_City_Code", "==", `${domainData?.domain_City ?? "delhi"}}`));
+        const q = query(poiRef, where("destination_City_Code", "==", `${domainData?.domain_City.toLowerCase() ?? "delhi"}}`));
         const querySnapshot = await getDocs(q);
 
         const poiList: POIItem[] = querySnapshot.docs.map((doc) => ({
