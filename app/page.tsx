@@ -120,9 +120,7 @@ const DelhiTicketsHero: React.FC = () => {
   console.log('___domainData' , domainData)
   // Render full UI after loading
 
-  if (!domainData) {
-  return <p>Loading domain data...</p>;
-}
+
 
   return (
     <div className="w-full ubuntu-light">
@@ -159,14 +157,11 @@ const DelhiTicketsHero: React.FC = () => {
   />
 )}
 
-   {domainData && (
-
 
       <Experiences1
         formattedPoiItems={formattedPoiItems}
         domainData={domainData}
-      /> 
-   )}
+      />
       {/* <Promo />
       <Experiences2 />
       <  /> */}

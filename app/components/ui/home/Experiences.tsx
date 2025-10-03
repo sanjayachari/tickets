@@ -105,7 +105,7 @@ const Experiences: React.FC<ExperiencesProps> = ({
   // Fetch POI (your existing useEffect)
   useEffect(() => {
     const fetchPOI = async () => {
-      console.log('domainData?.domain_City_Code.toLowerCase()', domainData?.domain_City.toLowerCase() ?? 'agra');
+      console.log('domainData?.domain_City_Code.toLowerCase()', domainData?.domain_City_Code.toLowerCase() ?? 'agra');
       setLoadingPOI(true);
       try {
         const poiRef = collection(
@@ -148,7 +148,7 @@ const Experiences: React.FC<ExperiencesProps> = ({
         // Firestore array-contains query
         const q = query(
           toursRef,
-          where("tour_City_Covered", "array-contains", domainData?.domain_City ?? "Agra"),
+          where("tour_City_Covered", "array-contains", "Delhi"),
           limit(4)
         );
 
