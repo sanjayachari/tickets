@@ -126,25 +126,25 @@ const City = ({ tours = [], poiData }: any) => {
             : "flex flex-col gap-4"
         }`}
       >
-        {tours.map((ticket: any, idx: number) => (
-          <TicketCard
-            key={idx} 
-            slug={ticket?.tour_Slug_Name}
-            imageUrl={ticket?.tour_Image_Url ?? "/city/city1.png"}
-            title={ticket?.tour_Name ?? "Untitled Tour"}
-            description={ticket?.tour_Description ?? "No description"}
-            rating={Number(ticket?.tour_Rating) || 0}
-            reviews={Number(ticket?.tour_Review_Count) || 0}
-            oldPrice={
-              Number(ticket?.tour_Package_Cost_Breakup?.base_Price) || 0
-            }
-            newPrice={
-              Number(ticket?.tour_Package_Cost_Breakup?.total_Price) || 0
-            }
-            discount={Number(ticket?.tour_Package_Cost_Breakup?.tax_Price) || 0}
-            view={viewMode}
-          />
-        ))}
+     {Array.isArray(tours) &&
+  tours
+    .filter((ticket: any) => ticket) // remove undefined/null
+    .map((ticket: any, idx: number) => (
+      <TicketCard
+        key={idx}
+        slug={ticket?.tour_Slug_Name}
+        imageUrl={ticket?.tour_Image_Url ?? "/city/city1.png"}
+        title={ticket?.tour_Name ?? "Untitled Tour"}
+        description={ticket?.tour_Description ?? "No description"}
+        rating={Number(ticket?.tour_Rating) || 0}
+        reviews={Number(ticket?.tour_Review_Count) || 0}
+        oldPrice={Number(ticket?.tour_Package_Cost_Breakup?.base_Price ?? 0)}
+        newPrice={Number(ticket?.tour_Package_Cost_Breakup?.total_Price ?? 0)}
+        discount={Number(ticket?.tour_Package_Cost_Breakup?.tax_Price ?? 0)}
+        view={viewMode}
+      />
+    ))}
+
       </div>
     </div>
   );
