@@ -128,7 +128,7 @@ const City: React.FC<CityProps> = ({ tours = [], poiData }) => {
             : "flex flex-col gap-4"
         }`}
       >
-        {Array.isArray(tours) &&
+        {tours && Array.isArray(tours) &&
           tours
             .filter(Boolean)
             .map((ticket, idx) => {
