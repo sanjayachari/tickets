@@ -30,10 +30,10 @@ const City = ({ tours = [], poiData }: any) => {
         <div className="flex flex-col justify-center p-2 md:p-4">
           <h1 className="font-bold text-xl sm:text-2xl md:text-3xl mb-2 leading-tight">
             <h2 className="text-lg font-semibold">
-              {(poiData?.destination_City_Slug_Name?.replace(/-/g, " ") ?? "POIs").replace(
-                /^./,
-                (str: string) => str.toUpperCase()
-              )}
+              {(
+                poiData?.destination_City_Slug_Name?.replace(/-/g, " ") ??
+                "POIs"
+              ).replace(/^./, (str: string) => str.toUpperCase())}
             </h2>
           </h1>
           <p className="text-sm sm:text-base text-gray-700 leading-5 md:leading-6 line-clamp-4">
@@ -49,7 +49,12 @@ const City = ({ tours = [], poiData }: any) => {
           >
             {images.map((img, idx) => (
               <div key={idx} className="min-w-full h-full relative">
-                <Image src={img} alt={`Gallery Image ${idx + 1}`} fill className="object-cover" />
+                <Image
+                  src={img}
+                  alt={`Gallery Image ${idx + 1}`}
+                  fill
+                  className="object-cover"
+                />
               </div>
             ))}
           </div>
@@ -73,7 +78,9 @@ const City = ({ tours = [], poiData }: any) => {
             {images.map((_, idx) => (
               <span
                 key={idx}
-                className={`h-2 w-2 rounded-full ${idx === current ? "bg-black" : "bg-gray-400"}`}
+                className={`h-2 w-2 rounded-full ${
+                  idx === current ? "bg-black" : "bg-gray-400"
+                }`}
               />
             ))}
           </div>
@@ -84,23 +91,27 @@ const City = ({ tours = [], poiData }: any) => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center my-6 gap-4">
         {/* Left side: results */}
         <div className="text-black font-medium text-sm sm:text-base">
-          {(poiData?.destination_City_Slug_Name?.replace(/-/g, " ") ?? "POIs").replace(
-                /^./,
-                (str: string) => str.toUpperCase()
-              )} : {tours.length} results
+          {(
+            poiData?.destination_City_Slug_Name?.replace(/-/g, " ") ?? "POIs"
+          ).replace(/^./, (str: string) => str.toUpperCase())}{" "}
+          : {tours.length} results
         </div>
 
         {/* Right side: toggle (only visible on md+) */}
         <div className="hidden md:flex gap-2 border border-black rounded-full px-3 py-1">
           <button
             onClick={() => setViewMode("grid")}
-            className={`p-1 rounded-full ${viewMode === "grid" ? "bg-gray-300" : "hover:bg-gray-200"}`}
+            className={`p-1 rounded-full ${
+              viewMode === "grid" ? "bg-gray-300" : "hover:bg-gray-200"
+            }`}
           >
             <Grid className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
           </button>
           <button
             onClick={() => setViewMode("list")}
-            className={`p-1 rounded-full ${viewMode === "list" ? "bg-gray-300" : "hover:bg-gray-200"}`}
+            className={`p-1 rounded-full ${
+              viewMode === "list" ? "bg-gray-300" : "hover:bg-gray-200"
+            }`}
           >
             <List className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
           </button>
@@ -108,21 +119,30 @@ const City = ({ tours = [], poiData }: any) => {
       </div>
 
       {/* Tickets Section */}
-      <div className={`${viewMode === "grid" ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" : "flex flex-col gap-4"}`}>
+      <div
+        className={`${
+          viewMode === "grid"
+            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            : "flex flex-col gap-4"
+        }`}
+      >
         {tours.map((ticket: any, idx: number) => (
-         <TicketCard
-  key={idx}
-  imageUrl={ticket?.tour_Image_Url ?? "/city/city1.png"}
-  title={ticket?.tour_Name ?? "Untitled Tour"}
-  description={ticket?.tour_Description ?? "No description"}
-  rating={Number(ticket?.tour_Rating) || 0}
-  reviews={Number(ticket?.tour_Review_Count) || 0}
-  oldPrice={Number(ticket?.tour_Package_Cost_Breakup?.base_Price) || 0}
-  newPrice={Number(ticket?.tour_Package_Cost_Breakup?.total_Price) || 0}
-  discount={Number(ticket?.tour_Package_Cost_Breakup?.tax_Price) || 0}
-  view={viewMode}
-/>
-
+          <TicketCard
+            key={idx}
+            imageUrl={ticket?.tour_Image_Url ?? "/city/city1.png"}
+            title={ticket?.tour_Name ?? "Untitled Tour"}
+            description={ticket?.tour_Description ?? "No description"}
+            rating={Number(ticket?.tour_Rating) || 0}
+            reviews={Number(ticket?.tour_Review_Count) || 0}
+            oldPrice={
+              Number(ticket?.tour_Package_Cost_Breakup?.base_Price) || 0
+            }
+            newPrice={
+              Number(ticket?.tour_Package_Cost_Breakup?.total_Price) || 0
+            }
+            discount={Number(ticket?.tour_Package_Cost_Breakup?.tax_Price) || 0}
+            view={viewMode}
+          />
         ))}
       </div>
     </div>

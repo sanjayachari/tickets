@@ -47,8 +47,16 @@ export default function TicketCard({
         <div>
           <p className="text-xs sm:text-sm text-gray-500 font-medium mb-1">Ticket</p>
           <h2 className="text-base sm:text-lg font-semibold text-gray-800">{title}</h2>
-          <p className="text-xs sm:text-sm text-gray-600 mt-1 line-clamp-2">{description}</p>
-
+  <p
+      className="text-xs sm:text-sm text-gray-600 mt-1"
+      style={{
+        display: "-webkit-box",
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: "vertical",
+        overflow: "hidden",
+      }}
+      dangerouslySetInnerHTML={{ __html: description }}
+    />
           <button className="mt-2 inline-block bg-red-600 text-white text-[10px] sm:text-xs px-2 py-0.5 sm:px-3 sm:py-1 rounded">
             Limited time Price
           </button>
