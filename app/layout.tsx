@@ -18,14 +18,31 @@ export async function generateMetadata(): Promise<Metadata> {
   const currentHeaders = await headers();
   const host = currentHeaders.get("x-current-domain") || "delhitickets.com";
 
-  const resolvedHost = host.includes("localhost") || host.includes("127.0.0.1")
-    ? "delhitickets.com"
-    : host;
+  // Determine if it’s a subdomain
+  const parts = host.split(".");
+  const isSubdomain = parts.length > 2;
+  const subDomain = isSubdomain ? parts[0] : null;
 
-  const domainData: DomainData | null = await getDomainData(resolvedHost);
+  // Resolve main host
+  const resolvedHost =
+    host.includes("localhost") || host.includes("127.0.0.1")
+      ? "delhitickets.com"
+      : host;
+
+  // Fetch domain data
+  let domainData: DomainData | null = null;
+
+  if (isSubdomain && subDomain) {
+    // Optional: fetch metadata specifically for subdomain POI
+    domainData = await getDomainData(subDomain + "." + parts.slice(1).join("."));
+  } else {
+    domainData = await getDomainData(resolvedHost);
+  }
 
   const title = domainData?.domain_Meta_Data?.title || "Staybook Tickets";
   const description = domainData?.domain_Meta_Data?.description || "Book tickets for attractions with Staybook";
+  const favicon = domainData?.domain_Meta_Data?.favicon_url || `https://${resolvedHost}/favicons/${resolvedHost}.ico`;
+  const ogImage = domainData?.domain_Meta_Data?.image_url || favicon;
 
   return {
     title,
@@ -36,7 +53,7 @@ export async function generateMetadata(): Promise<Metadata> {
       url: `https://${resolvedHost}`,
       images: [
         {
-          url: domainData?.domain_Meta_Data?.image_url || `https://${resolvedHost}/favicons/${resolvedHost}.ico`,
+          url: ogImage,
           width: 1200,
           height: 630,
           alt: title,
@@ -44,7 +61,7 @@ export async function generateMetadata(): Promise<Metadata> {
       ],
     },
     icons: {
-      icon: domainData?.domain_Meta_Data?.favicon_url || `https://${resolvedHost}/favicons/${resolvedHost}.ico`,
+      icon: favicon,
     },
   };
 }
