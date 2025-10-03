@@ -7,6 +7,7 @@ import { getDomainData } from "./lib/api";
 import { DomainProvider } from "./context/Domain";
 import { DomainData } from "./classes/DomainData";
 import ReduxProvider from "./lib/redux/ReduxProvider";
+import DynamicPoiPage from "./components/ui/dynamicPoi/DynamicPoi";
 
 type RootLayoutProps = { children: ReactNode };
 
@@ -75,7 +76,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <DomainProvider initialDomain={resolvedHost} initialData={domainData}>
             {isSubdomain ? (
               // ✅ Render alternate page for subdomains
-              <SubdomainPage host={host} domainData={domainData} />
+              <DynamicPoiPage />
             ) : (
               // ✅ Render normal UI for root domain
               children
@@ -87,13 +88,3 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   );
 }
 
-// Example Subdomain Page component
-const SubdomainPage = ({ host, domainData }: { host: string; domainData: DomainData | null }) => {
-  return (
-    <div className="w-full h-screen flex items-center justify-center">
-      <h1 className="text-3xl font-bold">
-        Welcome to {host.split(".")[0]} subdomain!
-      </h1>
-    </div>
-  );
-};
