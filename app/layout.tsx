@@ -3,41 +3,29 @@ import { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { headers } from "next/headers";
-import {  getDomainData } from "./lib/api";
+import { getDomainData } from "./lib/api";
 import { DomainProvider } from "./context/Domain";
 import { DomainData } from "./classes/DomainData";
 import ReduxProvider from "./lib/redux/ReduxProvider";
 
 type RootLayoutProps = { children: ReactNode };
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-// Dynamic SEO metadata
 export async function generateMetadata(): Promise<Metadata> {
   const currentHeaders = await headers();
   const host = currentHeaders.get("x-current-domain") || "delhitickets.com";
 
-  // ✅ if localhost/127 use delhitickets.com
-  const resolvedHost =
-    host.includes("localhost") || host.includes("127.0.0.1")
-      ? "delhitickets.com"
-      : host;
+  const resolvedHost = host.includes("localhost") || host.includes("127.0.0.1")
+    ? "delhitickets.com"
+    : host;
 
   const domainData: DomainData | null = await getDomainData(resolvedHost);
 
   const title = domainData?.domain_Meta_Data?.title || "Staybook Tickets";
-  const description =
-    domainData?.domain_Meta_Data?.description ||
-    "Book tickets for attractions with Staybook";
-  console.log('resolvedHost' , `https://${resolvedHost}/favicons/${resolvedHost}.ico`)
+  const description = domainData?.domain_Meta_Data?.description || "Book tickets for attractions with Staybook";
+
   return {
     title,
     description,
@@ -47,9 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
       url: `https://${resolvedHost}`,
       images: [
         {
-          url:
-            domainData?.domain_Meta_Data?.image_url ||
-            `https://${resolvedHost}/favicons/${resolvedHost}.ico`,
+          url: domainData?.domain_Meta_Data?.image_url || `https://${resolvedHost}/favicons/${resolvedHost}.ico`,
           width: 1200,
           height: 630,
           alt: title,
@@ -57,26 +43,23 @@ export async function generateMetadata(): Promise<Metadata> {
       ],
     },
     icons: {
-      // 🔹 favicon can come from Firestore OR directly mapped by domain
-      icon:
-        domainData?.domain_Meta_Data?.favicon_url ||
-        `https://${resolvedHost}/favicons/${resolvedHost}.ico`,
+      icon: domainData?.domain_Meta_Data?.favicon_url || `https://${resolvedHost}/favicons/${resolvedHost}.ico`,
     },
   };
 }
 
-
-// Root layout
 export default async function RootLayout({ children }: RootLayoutProps) {
   const currentHeaders = await headers();
   const host = currentHeaders.get("x-current-domain") || "delhitickets.com";
 
-  const resolvedHost =
-    host.includes("localhost") || host.includes("127.0.0.1")
-      ? "delhitickets.com"
-      : host;
+  const resolvedHost = host.includes("localhost") || host.includes("127.0.0.1")
+    ? "delhitickets.com"
+    : host;
 
   const domainData = await getDomainData(resolvedHost);
+
+  // Check if it’s a subdomain
+  const isSubdomain = host.split(".").length > 2; // e.g., red-fort-delhi.agratickets.com
 
   return (
     <html lang="en">
@@ -84,19 +67,33 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <link
           rel="icon"
           type="image/x-icon"
-          href={
-            domainData?.domain_Meta_Data?.favicon_url ??
-            `/favicons/${resolvedHost}.ico`
-          }
+          href={domainData?.domain_Meta_Data?.favicon_url ?? `/favicons/${resolvedHost}.ico`}
         />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ReduxProvider>
           <DomainProvider initialDomain={resolvedHost} initialData={domainData}>
-            {children}
+            {isSubdomain ? (
+              // ✅ Render alternate page for subdomains
+              <SubdomainPage host={host} domainData={domainData} />
+            ) : (
+              // ✅ Render normal UI for root domain
+              children
+            )}
           </DomainProvider>
         </ReduxProvider>
       </body>
     </html>
   );
 }
+
+// Example Subdomain Page component
+const SubdomainPage = ({ host, domainData }: { host: string; domainData: DomainData | null }) => {
+  return (
+    <div className="w-full h-screen flex items-center justify-center">
+      <h1 className="text-3xl font-bold">
+        Welcome to {host.split(".")[0]} subdomain!
+      </h1>
+    </div>
+  );
+};
