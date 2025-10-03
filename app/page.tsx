@@ -116,7 +116,14 @@ const DelhiTicketsHero: React.FC = () => {
     fetchData();
   }, [setCurrentDomain, setIsLoading]);
 
+
+  console.log('___domainData' , domainData)
   // Render full UI after loading
+
+  if (!domainData) {
+  return <p>Loading domain data...</p>;
+}
+
   return (
     <div className="w-full ubuntu-light">
       <Navbar currency={currency} language={language} />
@@ -142,17 +149,24 @@ const DelhiTicketsHero: React.FC = () => {
         </div>
       </div>
 
-      <DelhiExperiences
-        setPoiItems={setPoiItems}
-        poiItems={poiItems}
-        setFormattedPoiItems={setFormattedPoiItems}
-        formattedPoiItems={formattedPoiItems}
-        domainData={domainData}
-      />
+   {domainData && (
+  <DelhiExperiences
+    setPoiItems={setPoiItems}
+    poiItems={poiItems}
+    setFormattedPoiItems={setFormattedPoiItems}
+    formattedPoiItems={formattedPoiItems}
+    domainData={domainData}   // ✅ guaranteed non-null
+  />
+)}
+
+   {domainData && (
+
+
       <Experiences1
         formattedPoiItems={formattedPoiItems}
         domainData={domainData}
-      />
+      /> 
+   )}
       {/* <Promo />
       <Experiences2 />
       <  /> */}

@@ -57,7 +57,7 @@ interface ExperiencesProps {
   poiItems: POIItem[];
   setFormattedPoiItems: React.Dispatch<React.SetStateAction<any>>;
   formattedPoiItems: [string, POIItem[]][];
-  domainData: DomainData | null;
+  domainData: DomainData;
 }
 
 const Experiences: React.FC<ExperiencesProps> = ({
@@ -67,6 +67,8 @@ const Experiences: React.FC<ExperiencesProps> = ({
   formattedPoiItems,
   domainData
 }) => {
+
+  console.log('-----------' , domainData)
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const [categories, setCategories] = useState<Category[]>([]);
@@ -103,13 +105,14 @@ const Experiences: React.FC<ExperiencesProps> = ({
   // Fetch POI (your existing useEffect)
   useEffect(() => {
     const fetchPOI = async () => {
+      console.log('domainData?.domain_City_Code.toLowerCase()', domainData?.domain_City.toLowerCase() ?? 'agra');
       setLoadingPOI(true);
       try {
         const poiRef = collection(
           db,
           "TOUR-AND-TRAVELS-INFORMATION/IN/POINT-OF-INTEREST-INFORMATION"
         );
-        const q = query(poiRef, where("destination_City_Code", "==", `${domainData?.domain_City.toLowerCase() ?? "delhi"}}`));
+        const q = query(poiRef, where("destination_City_Code", "==", "agra"));
         const querySnapshot = await getDocs(q);
 
         const poiList: POIItem[] = querySnapshot.docs.map((doc) => ({
@@ -145,7 +148,7 @@ const Experiences: React.FC<ExperiencesProps> = ({
         // Firestore array-contains query
         const q = query(
           toursRef,
-          where("tour_City_Covered", "array-contains", "Delhi"),
+          where("tour_City_Covered", "array-contains", domainData?.domain_City ?? "Agra"),
           limit(4)
         );
 

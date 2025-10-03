@@ -47,6 +47,13 @@ export default function CategorySection({
     ? `${categorySlug}-in-${citySlug}`
     : categorySlug;
 
+const getImageSrc = (img?: string) => {
+  if (!img) return "/fallback/fallback.png"; // null/undefined case
+  if (img.startsWith("http://") || img.startsWith("https://")) return img; // external
+  if (img.startsWith("/")) return img; // local relative
+  return "/fallback/fallback.png"; // anything else invalid
+};
+
 
   return (
     <div>
@@ -66,18 +73,20 @@ export default function CategorySection({
 
       {/* Responsive scrollable container */}
       <div className="flex gap-4 overflow-x-auto md:grid md:grid-cols-3 lg:grid-cols-4 md:gap-6 no-scrollbar py-2">
-        {items.map((item, i) => (
+        {items && items.map((item, i) => (
           <div
             key={i}
             className="flex-shrink-0 h-[230px] w-[150px] md:w-full rounded-2xl overflow-hidden shadow-md hover:shadow-md transition relative md:h-[335px]"
           >
-            <Image
-              src={item.image || "/fallback/fallback.png"}
-              alt={item.title}
-              height={400}
-              width={400}
-              className="w-full h-full object-cover"
-            />
+          <Image
+  src={getImageSrc(item.image)}
+  alt={item.title || "Image"}
+  height={400}
+  width={400}
+  className="w-full h-full object-cover"
+/>
+
+
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/100 to-transparent p-4">
               <h3 className="text-white font-semibold line-clamp-2">{item.title}</h3>
 
