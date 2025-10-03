@@ -43,7 +43,8 @@ const DynamicPoiPage: React.FC<DynamicPoiPageProps> = ({ params }) => {
     if (!slug && typeof window !== "undefined") {
       const hostname = window.location.hostname.replace(/^www\./, "");
       const parts = hostname.split(".");
-
+        console.log('hostname' , hostname);
+        console.log('parts' , parts)
       // If subdomain exists, use it as slug
       if (parts.length > 2) {
         setSlug(parts[0]); // e.g., red-fort-delhi.agratickets.com -> slug = red-fort-delhi
