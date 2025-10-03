@@ -16,7 +16,8 @@ import FooterV1 from "../footer/home/FooterV1";
 const db = getFirestore(app);
 
 interface DynamicPoiPageProps {
-  params?: { slug?: string }; // optional slug via params
+  params?: { slug?: string }; // optional slug via params,
+  isSubdomain?: boolean;
 }
 
 const DynamicPoiPage: React.FC<DynamicPoiPageProps> = ({ params }) => {
