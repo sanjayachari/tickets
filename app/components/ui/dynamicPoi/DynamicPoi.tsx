@@ -36,15 +36,16 @@ const DynamicPoiPage: React.FC<DynamicPoiPageProps> = ({ params, subDomain }) =>
     if (!slug && typeof window !== "undefined") {
       const hostname = window.location.hostname.replace(/^www\./, ""); // e.g. taj-mahal.agratickets.com
       const parts = hostname.split("."); // ["taj-mahal", "agratickets", "com"]
-
+    console.log('parts___' , parts)
       if (parts.length > 2) {
         const poiPart = parts[0]; // e.g. taj-mahal
         const rootDomain = parts.slice(-2).join("."); // e.g. agratickets.com
         const city = rootDomain.split(".")[0].replace("tickets", ""); 
         // 🔹 Here "agratickets" → "agra"
         // If you have other domains like "delhitickets.com", it becomes "delhi"
-
+        console.log('cityyyyy' , city)
         const fullSlug = `${poiPart}-${city}`; // e.g. taj-mahal-agra
+        console.log('+++' ,fullSlug)
         setSlug(fullSlug);
       } else {
         // fallback for normal domain (no subdomain)
