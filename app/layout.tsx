@@ -20,20 +20,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const parts = host.split(".");
   const isSubdomain = parts.length > 2;
-  const subDomain = isSubdomain ? parts[0] : null;
-  const rootDomain = parts.slice(-2).join("."); // e.g., agratickets.com
+  const rootDomain = parts.slice(-2).join("."); // always root domain e.g., agratickets.com
 
   // Fetch domain data
-  let domainData: DomainData | null = null;
-  if (isSubdomain && subDomain) {
-    domainData = await getDomainData(`${subDomain}.${rootDomain}`);
-  } else {
-    domainData = await getDomainData(rootDomain);
-  }
+  const domainData: DomainData | null = await getDomainData(host);
 
   const title = domainData?.domain_Meta_Data?.title || "Staybook Tickets";
   const description = domainData?.domain_Meta_Data?.description || "Book tickets for attractions with Staybook";
-  const favicon = domainData?.domain_Meta_Data?.favicon_url || `https://${isSubdomain ? `${subDomain}.${rootDomain}` : rootDomain}/favicons/${isSubdomain ? `${subDomain}.${rootDomain}` : rootDomain}.ico`;
+
+  // 🔹 Always use root domain for favicon filename
+  const favicon = domainData?.domain_Meta_Data?.favicon_url || `https://${rootDomain}/favicons/${rootDomain}.ico`;
   const ogImage = domainData?.domain_Meta_Data?.image_url || favicon;
 
   return {
@@ -67,13 +63,11 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const subDomain = isSubdomain ? parts[0] : null;
   const rootDomain = parts.slice(-2).join(".");
 
-  // Fetch domain data dynamically for subdomain or root domain
-  const domainData: DomainData | null = await getDomainData(isSubdomain && subDomain ? `${subDomain}.${rootDomain}` : rootDomain);
+  // Fetch domain data dynamically
+  const domainData: DomainData | null = await getDomainData(host);
 
-  // Build favicon URL dynamically
-  const faviconUrl =
-    domainData?.domain_Meta_Data?.favicon_url ||
-    `https://${isSubdomain ? `${subDomain}.${rootDomain}` : rootDomain}/favicons/${isSubdomain ? `${subDomain}.${rootDomain}` : rootDomain}.ico`;
+  // 🔹 Always use root domain for favicon
+  const faviconUrl = domainData?.domain_Meta_Data?.favicon_url || `https://${rootDomain}/favicons/${rootDomain}.ico`;
 
   return (
     <html lang="en">
