@@ -62,7 +62,7 @@ const getImageSrc = (img?: string) => {
         <h3 className="text-xl font-semibold text-black">{title}</h3>
         {onSeeAll && (
           <Link
-            href={`/attractions/${finalSlug}`}
+            href={`/${finalSlug}`}
             onClick={onSeeAll}
             className="text-blue-600 text-sm font-semibold flex items-center gap-1"
           >
@@ -74,7 +74,8 @@ const getImageSrc = (img?: string) => {
       {/* Responsive scrollable container */}
       <div className="flex gap-4 overflow-x-auto md:grid md:grid-cols-3 lg:grid-cols-4 md:gap-6 no-scrollbar py-2">
         {items && items.map((item, i) => (
-          <div
+          <Link
+            href={`/${item.title?.replace(/\s+/g, "-")}`}
             key={i}
             className="flex-shrink-0 h-[230px] w-[150px] md:w-full rounded-2xl overflow-hidden shadow-md hover:shadow-md transition relative md:h-[335px]"
           >
@@ -112,7 +113,7 @@ const getImageSrc = (img?: string) => {
                 <p className="text-gray-200 text-sm mt-1 line-clamp-2">{item.description}</p>
               )}
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

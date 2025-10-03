@@ -220,7 +220,8 @@ const Experiences: React.FC<ExperiencesProps> = ({
             {poiByCategorySortedLimited.length > 0 &&
               poiByCategorySortedLimited[0][1].length > 0 &&
               poiByCategorySortedLimited[0][1].map((poi) => (
-                <div
+                <Link
+                  href={`/attractions/${poi.destination_City_Slug}`}
                   key={poi.id}
                   className="relative h-[230px] w-[150px] md:h-[300px] md:w-[240px] rounded-xl overflow-hidden shadow flex-shrink-0"
                 >
@@ -248,7 +249,7 @@ const Experiences: React.FC<ExperiencesProps> = ({
                       </p>
                     )}
                   </div>
-                </div>
+                </Link>
               ))}
           </div>
         </div>
@@ -271,7 +272,8 @@ const Experiences: React.FC<ExperiencesProps> = ({
           <div className="flex gap-4 md:gap-6 overflow-x-auto pb-2 no-scrollbar">
             {categories.length > 0 ? (
               categories.map((item) => (
-                <div
+                <Link
+                  href={`/attractions/${item.category_Slug}`}
                   key={item.category_Slug}
                   className="relative h-[230px] w-[150px] md:h-[300px] md:w-[240px] rounded-xl overflow-hidden shadow flex-shrink-0"
                 >
@@ -290,7 +292,7 @@ const Experiences: React.FC<ExperiencesProps> = ({
                       </p>
                     )}
                   </div>
-                </div>
+                </Link>
               ))
             ) : (
               <p className="text-gray-500">No categories available.</p>
@@ -382,7 +384,8 @@ const Experiences: React.FC<ExperiencesProps> = ({
                 : "/fallback/fallback.png";
 
               return (
-                <button
+                <Link
+                  href={`/${category}`}
                   key={i}
                   onClick={() => setSelectedCategory(category)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-sm border text-sm font-medium hover:bg-gray-100 text-black flex-shrink-0 ${
@@ -399,7 +402,7 @@ const Experiences: React.FC<ExperiencesProps> = ({
                     className="object-contain"
                   />
                   {category}
-                </button>
+                </Link>
               );
             })}
           </div>
@@ -407,7 +410,9 @@ const Experiences: React.FC<ExperiencesProps> = ({
           {/* Show items for selected category */}
           {formattedPoiItems.map(([category, items], idx) =>
             category === selectedCategory ? (
-              <div key={idx}>
+              <Link
+              href={`/${category}`}
+              key={idx}>
                 {/* You can reuse CategorySection here */}
                 {/* Example simple output */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -427,7 +432,7 @@ const Experiences: React.FC<ExperiencesProps> = ({
                     </div>
                   ))}
                 </div>
-              </div>
+              </Link>
             ) : null
           )}
         </div>
