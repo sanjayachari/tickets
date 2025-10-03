@@ -116,8 +116,6 @@ const DelhiTicketsHero: React.FC = () => {
     fetchData();
   }, [setCurrentDomain, setIsLoading]);
 
-  
-  console.log("____domainDatas____", domainData);
   // Render full UI after loading
   return (
     <div className="w-full ubuntu-light">

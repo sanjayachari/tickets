@@ -4,6 +4,7 @@ export interface DomainMetaData {
   image_url: string;
   description: string;
   canonical_url: string;
+  favicon_url: string;
 }
 
 export interface DomainData {

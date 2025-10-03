@@ -6,6 +6,7 @@ export interface DomainMetaData {
   image_url: string;
   description: string;
   canonical_url: string;
+  favicon_url: string;
 }
 
 export interface DomainData {
@@ -44,6 +45,7 @@ export async function getDomainData(domain: string): Promise<DomainData | null> 
         keywords: "Delhi, tickets, tours, monuments",
         canonical_url: "https://delhitickets.com",
         image_url: "https://delhitickets.com/og-image.jpg",
+        favicon_url : "https://delhitickets.com/favicons/delhitickets.com.ico",
       },
       domain_Availability: true,
       domain_City: "Delhi",
@@ -54,6 +56,7 @@ export async function getDomainData(domain: string): Promise<DomainData | null> 
       domain_Country_Code: "IN",
       domain_Created_At: new Date().toISOString(),
       domain_Updated_At: new Date().toISOString(),
+
     },
     "agratickets.com": {
       domain_Id: 2,
@@ -68,6 +71,7 @@ export async function getDomainData(domain: string): Promise<DomainData | null> 
         keywords: "Agra, Taj Mahal, Agra Fort, tickets",
         canonical_url: "https://agratickets.com",
         image_url: "https://agratickets.com/og-image.jpg",
+        favicon_url : "https://agratickets.com/favicons/agratickets.com.ico",
       },
       domain_Availability: true,
       domain_City: "Agra",
