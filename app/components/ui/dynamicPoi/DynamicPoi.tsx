@@ -32,28 +32,31 @@ const DynamicPoiPage: React.FC<DynamicPoiPageProps> = ({ params, subDomain }) =>
   const [tourPackages, setTourPackages] = useState<any[]>([]);
 
   // 🔹 Determine slug with POI + City
-  useEffect(() => {
-    if (!slug && typeof window !== "undefined") {
-      const hostname = window.location.hostname.replace(/^www\./, ""); // e.g. taj-mahal.agratickets.com
-      const parts = hostname.split("."); // ["taj-mahal", "agratickets", "com"]
-    console.log('parts___' , parts)
-      if (parts.length > 2) {
-        const poiPart = parts[0]; // e.g. taj-mahal
-        const rootDomain = parts.slice(-2).join("."); // e.g. agratickets.com
-        const city = rootDomain.split(".")[0].replace("tickets", ""); 
-        // 🔹 Here "agratickets" → "agra"
-        // If you have other domains like "delhitickets.com", it becomes "delhi"
-        console.log('cityyyyy' , city)
-        const fullSlug = `${poiPart}-${city}`; // e.g. taj-mahal-agra
-        console.log('+++' ,fullSlug)
+// 🔹 Determine slug with POI + City
+useEffect(() => {
+  if (typeof window !== "undefined") {
+    const hostname = window.location.hostname.replace(/^www\./, ""); 
+    const parts = hostname.split("."); // ["taj-mahal", "agratickets", "com"]
+
+    if (parts.length > 2) {
+      const poiPart = parts[0]; // e.g. taj-mahal
+      const rootDomain = parts.slice(-2).join("."); // agratickets.com
+      const city = rootDomain.replace("tickets.com", ""); // agratickets.com -> agra
+
+      const fullSlug = `${poiPart}-${city}`; // taj-mahal-agra
+      if (slug !== fullSlug) {
         setSlug(fullSlug);
-      } else {
-        // fallback for normal domain (no subdomain)
-        const pathSlug = pathname.split("/")[1];
+      }
+    } else {
+      // fallback for non-subdomain case
+      const pathSlug = pathname.split("/")[1];
+      if (slug !== pathSlug) {
         setSlug(pathSlug);
       }
     }
-  }, [slug, pathname, subDomain]);
+  }
+}, [pathname]);
+
 
   // 🔹 Fetch domain info
   useEffect(() => {
