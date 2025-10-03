@@ -18,30 +18,22 @@ export async function generateMetadata(): Promise<Metadata> {
   const currentHeaders = await headers();
   const host = currentHeaders.get("x-current-domain") || "delhitickets.com";
 
-  // Determine if it’s a subdomain
   const parts = host.split(".");
   const isSubdomain = parts.length > 2;
   const subDomain = isSubdomain ? parts[0] : null;
-
-  // Resolve main host
-  const resolvedHost =
-    host.includes("localhost") || host.includes("127.0.0.1")
-      ? "delhitickets.com"
-      : host;
+  const rootDomain = parts.slice(-2).join("."); // e.g., agratickets.com
 
   // Fetch domain data
   let domainData: DomainData | null = null;
-
   if (isSubdomain && subDomain) {
-    // Optional: fetch metadata specifically for subdomain POI
-    domainData = await getDomainData(subDomain + "." + parts.slice(1).join("."));
+    domainData = await getDomainData(`${subDomain}.${rootDomain}`);
   } else {
-    domainData = await getDomainData(resolvedHost);
+    domainData = await getDomainData(rootDomain);
   }
 
   const title = domainData?.domain_Meta_Data?.title || "Staybook Tickets";
   const description = domainData?.domain_Meta_Data?.description || "Book tickets for attractions with Staybook";
-  const favicon = domainData?.domain_Meta_Data?.favicon_url || `https://${resolvedHost}/favicons/${resolvedHost}.ico`;
+  const favicon = domainData?.domain_Meta_Data?.favicon_url || `https://${isSubdomain ? `${subDomain}.${rootDomain}` : rootDomain}/favicons/${isSubdomain ? `${subDomain}.${rootDomain}` : rootDomain}.ico`;
   const ogImage = domainData?.domain_Meta_Data?.image_url || favicon;
 
   return {
@@ -50,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      url: `https://${resolvedHost}`,
+      url: `https://${host}`,
       images: [
         {
           url: ogImage,
@@ -70,35 +62,30 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const currentHeaders = await headers();
   const host = currentHeaders.get("x-current-domain") || "delhitickets.com";
 
-  const resolvedHost = host.includes("localhost") || host.includes("127.0.0.1")
-    ? "delhitickets.com"
-    : host;
+  const parts = host.split(".");
+  const isSubdomain = parts.length > 2;
+  const subDomain = isSubdomain ? parts[0] : null;
+  const rootDomain = parts.slice(-2).join(".");
 
-  const domainData = await getDomainData(resolvedHost);
+  // Fetch domain data dynamically for subdomain or root domain
+  const domainData: DomainData | null = await getDomainData(isSubdomain && subDomain ? `${subDomain}.${rootDomain}` : rootDomain);
 
-  // Check if it’s a subdomain
-  let isSubdomain = host.split(".").length > 2; // e.g., red-fort-delhi.agratickets.com
-  const subDomain = host.split(".")[0]; // e.g., red-fort-delhi
-  console.log('____isSubdomain' , isSubdomain)
-  console.log('=====' , host.split("."))
+  // Build favicon URL dynamically
+  const faviconUrl =
+    domainData?.domain_Meta_Data?.favicon_url ||
+    `https://${isSubdomain ? `${subDomain}.${rootDomain}` : rootDomain}/favicons/${isSubdomain ? `${subDomain}.${rootDomain}` : rootDomain}.ico`;
 
   return (
     <html lang="en">
       <head>
-        <link
-          rel="icon"
-          type="image/x-icon"
-          href={domainData?.domain_Meta_Data?.favicon_url ?? `/favicons/${resolvedHost}.ico`}
-        />
+        <link rel="icon" type="image/x-icon" href={faviconUrl} />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ReduxProvider>
-          <DomainProvider initialDomain={resolvedHost} initialData={domainData}>
-            {isSubdomain ? (
-              // ✅ Render alternate page for subdomains
+          <DomainProvider initialDomain={rootDomain} initialData={domainData}>
+            {isSubdomain && subDomain ? (
               <DynamicPoiPage subDomain={subDomain} />
             ) : (
-              // ✅ Render normal UI for root domain
               children
             )}
           </DomainProvider>
@@ -107,4 +94,3 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     </html>
   );
 }
-
