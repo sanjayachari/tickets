@@ -16,58 +16,49 @@ import FooterV1 from "../footer/home/FooterV1";
 const db = getFirestore(app);
 
 interface DynamicPoiPageProps {
-  params?: { slug?: string }; // optional slug via params,
-  isSubdomain?: boolean;
+  params?: { slug?: string };
+  subDomain?: string; // optional subdomain
 }
 
-const DynamicPoiPage: React.FC<DynamicPoiPageProps> = ({ params }) => {
+const DynamicPoiPage: React.FC<DynamicPoiPageProps> = ({ params, subDomain }) => {
   const [currency] = useState<string>("INR");
   const [language] = useState<string>("En");
 
-  const {
-    currentDomain,
-    setCurrentDomain,
-    isLoading,
-    setIsLoading,
-    setDomainData,
-    domainData,
-  } = useDomain();
-
+  const { currentDomain, setCurrentDomain, isLoading, setIsLoading, setDomainData } = useDomain();
   const pathname = usePathname();
-  const [slug, setSlug] = useState<string | undefined>(params?.slug);
+  const [slug, setSlug] = useState<string | undefined>(params?.slug || subDomain);
 
   const [poiData, setPoiData] = useState<any>(null);
   const [tourPackages, setTourPackages] = useState<any[]>([]);
 
-  // Determine slug if not provided via params
+  // Determine slug if not provided
   useEffect(() => {
     if (!slug && typeof window !== "undefined") {
-      const hostname = window.location.hostname.replace(/^www\./, "");
-      const parts = hostname.split(".");
-        console.log('hostname' , hostname);
-        console.log('parts' , parts)
-      // If subdomain exists, use it as slug
-      if (parts.length > 2) {
-        setSlug(parts[0]); // e.g., red-fort-delhi.agratickets.com -> slug = red-fort-delhi
+      if (subDomain) {
+        setSlug(subDomain); // use subdomain if provided
       } else {
-        // fallback to pathname if no subdomain
-        const pathSlug = pathname.split("/")[1];
-        setSlug(pathSlug);
+        const hostname = window.location.hostname.replace(/^www\./, "");
+        const parts = hostname.split(".");
+
+        // subdomain from hostname
+        if (parts.length > 2) {
+          setSlug(parts[0]);
+        } else {
+          const pathSlug = pathname.split("/")[1];
+          setSlug(pathSlug);
+        }
       }
     }
-  }, [slug, pathname]);
+  }, [slug, pathname, subDomain]);
 
   // Fetch domain info
   useEffect(() => {
     const fetchDomain = async () => {
       try {
-        let domain_name = "delhitickets.com"; // fallback default
+        let domain_name = "delhitickets.com";
         if (typeof window !== "undefined") {
           const hostname = window.location.hostname;
-          domain_name =
-            hostname === "localhost"
-              ? "delhitickets.com"
-              : hostname.replace(/^www\./, "");
+          domain_name = hostname === "localhost" ? "delhitickets.com" : hostname.replace(/^www\./, "");
         }
 
         setCurrentDomain(domain_name);
@@ -104,11 +95,8 @@ const DynamicPoiPage: React.FC<DynamicPoiPageProps> = ({ params }) => {
         const tourSnap = await getDocs(q);
 
         const tours: any[] = [];
-        tourSnap.forEach((doc) => {
-          tours.push({ id: doc.id, ...doc.data() });
-        });
+        tourSnap.forEach((doc) => tours.push({ id: doc.id, ...doc.data() }));
         setTourPackages(tours);
-
       } catch (err) {
         console.error("Firestore Error:", err);
       } finally {

@@ -61,6 +61,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   // Check if it’s a subdomain
   const isSubdomain = host.split(".").length > 2; // e.g., red-fort-delhi.agratickets.com
+  const subDomain = host.split(".")[0]; // e.g., red-fort-delhi
   console.log('____isSubdomain' , isSubdomain)
   console.log('=====' , host.split("."))
   return (
@@ -77,7 +78,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <DomainProvider initialDomain={resolvedHost} initialData={domainData}>
             {isSubdomain ? (
               // ✅ Render alternate page for subdomains
-              <DynamicPoiPage isSubdomain={isSubdomain} />
+              <DynamicPoiPage subDomain={subDomain} />
             ) : (
               // ✅ Render normal UI for root domain
               children
