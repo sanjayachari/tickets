@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 // 🔹 Firebase imports
-import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, limit } from "firebase/firestore";
 import { useDomain } from "@/app/context/Domain";
 import { app } from "@/app/lib/firebase";
 import apiClient from "@/app/lib/helper/apiClient";
@@ -97,8 +97,11 @@ useEffect(() => {
 
         // Fetch Tours linked to this POI
         const tourRef = collection(db, "TOUR-AND-TRAVELS-INFORMATION", "IN", "TOUR-PACKAGE-INFORMATION");
-        const q = query(tourRef, where("tour_Point_Of_Interest_Slug_List", "array-contains", slug));
-        const tourSnap = await getDocs(q);
+        const q = query(
+          tourRef,
+          where("tour_Point_Of_Interest_Slug_List", "array-contains", slug),
+        );       
+         const tourSnap = await getDocs(q);
 
         const tours: any[] = [];
         tourSnap.forEach((doc) => tours.push({ id: doc.id, ...doc.data() }));

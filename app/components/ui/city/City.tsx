@@ -5,9 +5,11 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight, Grid, List } from "lucide-react";
 import TicketCard from "./CityCard";
 
-const images = ["/city/city1.png", "/city/city1.png", "/city/city1.png"];
-
 const City = ({ tours = [], poiData }: any) => {
+  const images: string[] =
+    poiData?.destination_Image_Object_List?.length > 0
+      ? poiData.destination_Image_Object_List.slice(0, 4) // ✅ max 4 images
+      : ["/city/city1.png"]; // fallback if no images
 
   const [current, setCurrent] = useState(0);
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");
@@ -57,31 +59,37 @@ const City = ({ tours = [], poiData }: any) => {
             ))}
           </div>
 
-          {/* Controls */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white bg-opacity-70 rounded-full p-2 hover:bg-opacity-100"
-          >
-            <ChevronLeft className="text-black w-4 h-4 sm:w-5 sm:h-5" />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white bg-opacity-70 rounded-full p-2 hover:bg-opacity-100"
-          >
-            <ChevronRight className="text-black w-4 h-4 sm:w-5 sm:h-5" />
-          </button>
+          {/* Controls (only if more than 1 image) */}
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={prevSlide}
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white bg-opacity-70 rounded-full p-2 hover:bg-opacity-100"
+              >
+                <ChevronLeft className="text-black w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white bg-opacity-70 rounded-full p-2 hover:bg-opacity-100"
+              >
+                <ChevronRight className="text-black w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </>
+          )}
 
-          {/* Dots */}
-          <div className="absolute bottom-2 flex space-x-2">
-            {images.map((_, idx) => (
-              <span
-                key={idx}
-                className={`h-2 w-2 rounded-full ${
-                  idx === current ? "bg-black" : "bg-gray-400"
-                }`}
-              />
-            ))}
-          </div>
+          {/* Dots (only if more than 1 image) */}
+          {images.length > 1 && (
+            <div className="absolute bottom-2 flex space-x-2">
+              {images.map((_, idx) => (
+                <span
+                  key={idx}
+                  className={`h-2 w-2 rounded-full ${
+                    idx === current ? "bg-black" : "bg-gray-400"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -124,25 +132,25 @@ const City = ({ tours = [], poiData }: any) => {
             : "flex flex-col gap-4"
         }`}
       >
-        {tours.map((ticket: any, idx: number) => (
-          <TicketCard
-            key={idx} 
-            slug={ticket?.tour_Slug_Name}
-            imageUrl={ticket?.tour_Image_Url ?? "/city/city1.png"}
-            title={ticket?.tour_Name ?? "Untitled Tour"}
-            description={ticket?.tour_Description ?? "No description"}
-            rating={Number(ticket?.tour_Rating) || 0}
-            reviews={Number(ticket?.tour_Review_Count) || 0}
-            oldPrice={
-              Number(ticket?.tour_Package_Cost_Breakup?.base_Price) || 0
-            }
-            newPrice={
-              Number(ticket?.tour_Package_Cost_Breakup?.total_Price) || 0
-            }
-            discount={Number(ticket?.tour_Package_Cost_Breakup?.tax_Price) || 0}
-            view={viewMode}
-          />
-        ))}
+   {tours.map((ticket: any, idx: number) => {
+
+  return (
+    <TicketCard
+      key={idx}
+      slug={ticket?.tour_Slug_Name}
+      imageUrl={ticket?.tour_Image_Url ?? "/city/city1.png"}
+      title={ticket?.tour_Name ?? "Untitled Tour"}
+      description={ticket?.tour_Description ?? "No description"}
+      rating={Number(ticket?.tour_Rating) || 0}
+      reviews={Number(ticket?.tour_Review_Count) || 0}
+      oldPrice={Number(ticket?.tour_Cost_Breakup?.base_Price) || 0}
+      newPrice={Number(ticket?.tour_Cost_Breakup?.total_Price) || 0}
+      discount={Number(ticket?.tour_Cost_Breakup?.tax_Price) || 0}
+      view={viewMode}
+    />
+  );
+})}
+
       </div>
     </div>
   );

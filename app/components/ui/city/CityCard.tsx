@@ -31,8 +31,7 @@ export default function TicketCard({
 }: TicketCardProps) {
   const isGrid = view === "grid";
 
-
-    const { currentDomain } = useDomain(); // ✅ get current domain
+  const { currentDomain } = useDomain(); // ✅ get current domain
   
   return (
     <Link
