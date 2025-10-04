@@ -19,7 +19,6 @@ const AttractionPage: React.FC = () => {
   const pathname = usePathname(); // e.g., "/category/attractions"
   const parts = pathname.split("/").filter(Boolean); // ["category", "attractions"]
   const categorySlug = parts[0]; // "attractions"
-  console.log("parts", parts);
   const [currency] = useState<string>("INR");
   const [language] = useState<string>("English");
   const [pageData, setPageData] = useState<any>(null);
@@ -109,7 +108,6 @@ const AttractionPage: React.FC = () => {
           const categoryRes = await apiClient.get(
             `/domain/${format_domain_name}/category/${categorySlug}`
           );
-          console.log("categoryRes", categoryRes);
           setCategoryData(categoryRes.data.data);
           setCategoryLoading(false);
         }
@@ -167,8 +165,6 @@ const getPOIsFromUrl = async (url: string) => {
       "POINT-OF-INTEREST-INFORMATION"
     );
 
-    console.log('___category' , category)
-
     const q = query(
       poiRef,
       where("destination_Category", "==", category), // "Museum"
@@ -197,7 +193,6 @@ useEffect(() => {
     const fun = async () => {
       const data = await getPOIsFromUrl(window.location.href);
       if (data) {
-        console.log('dat' , data)
         setPoiItems(data.data);
         setCityDisplay(data.cityDisplay);
         setCategory(data.category);

@@ -6,7 +6,6 @@ self.onmessage = async (event) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(event.data), // e.g. { tourSlugName, searchedDate }
     });
-    console.log('data___' ,response)
     const data = await response.json();
     self.postMessage(data);
   } catch (error) {

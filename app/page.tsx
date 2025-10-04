@@ -86,7 +86,6 @@ const DelhiTicketsHero: React.FC = () => {
         let domain_name = "delhitickets.com"; // fallback default
         if (typeof window !== "undefined") {
           const hostname = window.location.hostname;
-          console.log("hostname", hostname);
           domain_name =
             hostname === "localhost"
               ? "delhitickets.com"
@@ -101,7 +100,6 @@ const DelhiTicketsHero: React.FC = () => {
         });
 
         if (res.status) {
-          console.log("domain data", res.data);
           setDomainData(res.data as DomainData);
         } else {
           console.error("Domain API Error:", res.error);
@@ -115,12 +113,6 @@ const DelhiTicketsHero: React.FC = () => {
 
     fetchData();
   }, [setCurrentDomain, setIsLoading]);
-
-
-  console.log('___domainData' , domainData)
-  // Render full UI after loading
-
-
 
   return (
     <div className="w-full ubuntu-light">

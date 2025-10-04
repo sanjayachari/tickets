@@ -20,7 +20,6 @@ interface ExperiencesProps {
 const extraComponents = [PromoBanner, PromoBanner1, PromoBanner2];
 
 const ExperiencesAttraction: React.FC<ExperiencesProps> = ({ formattedPoiItems , domainData }) => {
-  console.log('___formattedPoiItems'  , formattedPoiItems)
   return (
     <div className="bg-white">
       

@@ -139,7 +139,6 @@ export const TourClientComponent = ({ tourData , tourSlug }: any) => {
   const [lowestPrice, setLowestPrice] = useState<null | number>(null);
   const [slotModel, setSlotModel] = useState<boolean>(false);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
-  console.log('__lowestPrice' , lowestPrice)
   const [isOpen, setIsOpen] = useState<SectionKeys>({
     tourHighlights: true,
     tourHighlightInclusion: true,
@@ -226,7 +225,6 @@ useEffect(() => {
 
   tourWorker.onmessage = (event) => {
     const data = event.data;
-    console.log('data____' , data)
     if (data.error) {
       console.error("Error from worker:", data.error);
     } else {

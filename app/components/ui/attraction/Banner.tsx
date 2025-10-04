@@ -16,8 +16,6 @@ const Banner = ({ categoryData, domainData }: BannerProps) => {
   const categoryName = categoryData?.category_Name || "";
   const domainName = domainData?.domain_City || domainData?.domain_Name || "";
 
-  console.log("category_Name", categoryName);
-
   return (
     <div className="w-full relative">
       {/* Banner Image */}

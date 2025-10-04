@@ -68,7 +68,6 @@ const Experiences: React.FC<ExperiencesProps> = ({
   domainData
 }) => {
 
-  console.log('-----------' , domainData)
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const [categories, setCategories] = useState<Category[]>([]);
@@ -82,11 +81,9 @@ const Experiences: React.FC<ExperiencesProps> = ({
       const response = await DomainRequests.fetchCategoryData({
         domain: "delhitickets", // domain slug
       });
-      console.log("response____", response);
       if (response.status && response.data) {
         // assuming categories are in response.data.categories
         const domainCategories: Category[] = response.data;
-        console.log("domainCategories", domainCategories);
         setCategories(domainCategories);
       } else {
         const err = response as DomainErrorResponse;
@@ -105,7 +102,6 @@ const Experiences: React.FC<ExperiencesProps> = ({
   // Fetch POI (your existing useEffect)
   useEffect(() => {
     const fetchPOI = async () => {
-      console.log('domainData?.domain_City_Code.toLowerCase()', domainData?.domain_City_Code.toLowerCase() ?? 'agra');
       setLoadingPOI(true);
       try {
         const poiRef = collection(
@@ -120,7 +116,6 @@ const Experiences: React.FC<ExperiencesProps> = ({
           ...(doc.data() as any),
         }));
 
-        console.log("poiList____", poiList);
         setPoiItems(poiList);
       } catch (err: any) {
         console.error("Firebase fetch error:", err);
@@ -159,7 +154,6 @@ const Experiences: React.FC<ExperiencesProps> = ({
           ...(doc.data() as any),
         }));
 
-        console.log("toursList____", toursList);
         setTourItems(toursList);
       } catch (err: any) {
         console.error("Firebase fetch tours error:", err);

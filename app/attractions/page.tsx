@@ -39,47 +39,6 @@ const AttractionPage: React.FC = () => {
     [string, POIItem[]][]
   >([]);
 
-  const topAttractions = [
-  { title: "Burj Khalifa", price: "from INR 21,999", image: "/main.png" },
-  { title: "Dubai Frame", price: "from INR 21,999", image: "/main2.png" },
-  { title: "Burj Al Arab", price: "from INR 21,999", image: "/main3.png" },
-  { title: "Atlantis", price: "from INR 21,999", image: "/main4.png" },
-  { title: "Atlantis", price: "from INR 21,999", image: "/burj.jpeg" },
-];
-
-
-console.log('categorySlug____', categorySlug)
-const bestExperiences = [
-  {
-    title: "Museum of Illusions",
-    tag: "Ticket",
-    rating: "4.5",
-    price: "₹10,800/Per",
-    image: "/main5.png",
-  },
-  {
-    title: "Embarking in a 3-Day Adventure",
-    tag: "Ticket",
-    rating: "4.5",
-    price: "₹10,800/Per",
-    image: "/main6.png",
-  },
-  {
-    title: "Explore Red Fort Skip the ticket",
-    tag: "Ticket",
-    rating: "4.5",
-    price: "₹4,500/Per",
-    image: "/main7.png",
-  },
-  {
-    title: "Timezone Pacific Mall Garden",
-    tag: "Ticket",
-    rating: "4.5",
-    price: "₹10,800/Per",
-    image: "/main8.png",
-  },
-];
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -139,7 +98,6 @@ const bestExperiences = [
             ...(doc.data() as any),
           }));
   
-          console.log("poiList____", poiList);
           setPoiItems(poiList);
         } catch (err: any) {
           console.error("Firebase fetch error:", err);
@@ -150,9 +108,6 @@ const bestExperiences = [
   
       fetchPOI();
     }, []);
-
-    console.log('poiItems' , poiItems)
-
 
      // Group POIs by destination_Category, sort by count descending, and limit categories/items
       const poiByCategorySortedLimited = useMemo(() => {
@@ -181,8 +136,6 @@ const bestExperiences = [
       useEffect(() => {
         setFormattedPoiItems(poiByCategorySortedLimited);
       }, [poiByCategorySortedLimited]);
-
-      console.log('____formattedPoiItems' , formattedPoiItems)
 
   return (
     <div className="w-full ubuntu-light">

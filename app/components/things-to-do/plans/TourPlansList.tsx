@@ -91,7 +91,6 @@ export const TourPlansList = ({
   const filteredPlans = availablePlansList();
 
   useEffect(() => {
-    console.log('planId' , planId)
     if (planId) {
       const foundIndex = tourPlansList.findIndex(
         (plan) => plan.tourPlan_Id === planId,
@@ -108,9 +107,6 @@ export const TourPlansList = ({
     }, 100);
   }, [planId, tourPlansList]);
 
-console.log('tourPlansList___' , tourPlansList.length)
-  console.log('_____edPlans____' , filteredPlans.length > 0 )
-  console.log(':::::' , isLoading , flag , skeletonLoading)
   return (
     <div className="mb-2 flex w-full flex-col lg:mt-2">
       <h2 className="mb-1 text-lg font-semibold text-secondary sm:text-xl md:text-2xl">

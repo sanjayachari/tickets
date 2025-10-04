@@ -8,8 +8,6 @@ import TicketCard from "./CityCard";
 const images = ["/city/city1.png", "/city/city1.png", "/city/city1.png"];
 
 const City = ({ tours = [], poiData }: any) => {
-  console.log("tours", tours);
-  console.log("poiData", poiData);
 
   const [current, setCurrent] = useState(0);
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");

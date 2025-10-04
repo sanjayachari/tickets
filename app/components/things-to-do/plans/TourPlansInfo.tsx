@@ -64,8 +64,6 @@ export const TourPlansInfo = ({
   setSlotModel,
 }: TourPlansInfoProps) => {
 
-  console.log('RENDERED')
-
   const dispatch = useDispatch();
   const isActive = tourIdx === activeIdx;
   const isActivity = tourData.tour_Type === "Activity";
@@ -85,7 +83,6 @@ export const TourPlansInfo = ({
   const tourBookingInfo = useSelector(selectTourBookingInfo);
   const searchedDate = useSelector(selectSearchedDate);
   const isChildPlan = containsAnySubstring(tourPlanInfo.tourPlan_Title);
-  console.log('tourPlanMap' , tourPlanMap)
   useEffect(() => {
     setSelectedPickupTime(selectedSlot ?? "");
   }, [selectedSlot]);
@@ -218,9 +215,6 @@ export const TourPlansInfo = ({
     }
   }, [planSelected]);
 
-  console.log('availablePlanD__ata' , availablePlanData)
-  console.log('isA' , isActive)
-  console.log('======' , tourPlanInfo)
   return (
     <div
       className={`flex w-full flex-col rounded-lg border-gray-200 ${isActive ? "border" : "cursor-pointer border hover:shadow-md"}`}

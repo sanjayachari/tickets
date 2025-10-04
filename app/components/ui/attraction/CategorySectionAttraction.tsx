@@ -24,7 +24,6 @@ export default function CategorySectionAttraction({
   onSeeAll,
   seeAllHref,
 }: CategorySectionProps) {
-  console.log("______items____", items);
 
   const slugify = (text: string) =>
     text
